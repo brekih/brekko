@@ -1,1 +1,160 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Brekkó upplýsingaskjár</title>
+
+<style>
+body {
+    margin: 0;
+    background: #ffffff;
+    font-family: Segoe UI, Arial, sans-serif;
+    text-align: center;
+}
+
+#dayText {
+    font-size: 42px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+#dateText {
+    font-size: 28px;
+    margin-top: 5px;
+}
+
+.clock {
+    width: 240px;
+    height: 240px;
+    border: 8px solid #8b0000;
+    border-radius: 50%;
+    margin: 20px auto;
+    position: relative;
+}
+
+.center {
+    width: 12px;
+    height: 12px;
+    background: #000;
+    border-radius: 50%;
+    position: absolute;
+    top: 114px;
+    left: 114px;
+}
+
+.hand {
+    position: absolute;
+    left: 50%;
+    transform-origin: bottom center;
+}
+
+.hour {
+    width: 6px;
+    height: 60px;
+    background: #000;
+    top: 60px;
+    margin-left: -3px;
+}
+
+.minute {
+    width: 4px;
+    height: 85px;
+    background: #444;
+    top: 35px;
+    margin-left: -2px;
+}
+
+.second {
+    width: 2px;
+    height: 95px;
+    background: red;
+    top: 25px;
+    margin-left: -1px;
+}
+
+#digital {
+    font-size: 32px;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div id="dayText"></div>
+<div id="dateText"></div>
+
+<div class="clock">
+    <div class="hand hour" id="hour"></div>
+    <div class="hand minute" id="minute"></div>
+    <div class="hand second" id="second"></div>
+    <div class="center"></div>
+</div>
+
+<div id="digital"></div>
+
+<script>
+
+const days = [
+    "Sunnudagur",
+    "Mánudagur",
+    "Þriðjudagur",
+    "Miðvikudagur",
+    "Fimmtudagur",
+    "Föstudagur",
+    "Laugardagur"
+];
+
+const months = [
+    "janúar",
+    "febrúar",
+    "mars",
+    "apríl",
+    "maí",
+    "júní",
+    "júlí",
+    "ágúst",
+    "september",
+    "október",
+    "nóvember",
+    "desember"
+];
+
+function updateClock() {
+
+    const now = new Date();
+
+    document.getElementById("dayText").innerHTML =
+        "Í dag er " + days[now.getDay()] + "!";
+
+    document.getElementById("dateText").innerHTML =
+        now.getDate() + ". " +
+        months[now.getMonth()] + " " +
+        now.getFullYear();
+
+    const sec = now.getSeconds();
+    const min = now.getMinutes();
+    const hour = now.getHours();
+
+    document.getElementById("second").style.transform =
+        `translateX(-50%) rotate(${sec * 6}deg)`;
+
+    document.getElementById("minute").style.transform =
+        `translateX(-50%) rotate(${min * 6}deg)`;
+
+    document.getElementById("hour").style.transform =
+        `translateX(-50%) rotate(${hour * 30 + min / 2}deg)`;
+
+    document.getElementById("digital").innerHTML =
+        now.toLocaleTimeString('is-IS');
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+
+</script>
+
+</body>
+</html>
