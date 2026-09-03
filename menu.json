@@ -1,0 +1,62 @@
+[
+  {
+    "start": "2026-08-31",
+    "end": "2026-09-04",
+    "label": "31. ágúst - 4. september",
+    "meals": [
+      "Hakk og spaghetti",
+      "Soðin ýsa, kartöflur, rúgbrauð og laukfeiti",
+      "Vanilluskyr og smurt brauð",
+      "Kjúklingabollur, hrísgrjón og súrsæt sósa",
+      ""
+    ]
+  },
+  {
+    "start": "2026-09-07",
+    "end": "2026-09-11",
+    "label": "7. - 11. september",
+    "meals": [
+      "Kentuckýfiskur, hrísgrjón og köld sósa",
+      "Kjötfarsbollur, kartöflur og feiti",
+      "Nætursöltuð ýsa, kartöflur, rúgbrauð og laukfeiti",
+      "Pylsupasta",
+      "Kjúklingalasagne"
+    ]
+  },
+  {
+    "start": "2026-09-14",
+    "end": "2026-09-18",
+    "label": "14. - 18. september",
+    "meals": [
+      "Fiskibollur, hrísgrjón og karrýsósa",
+      "Nautagúllas, kartöflumús, brún sósa og sulta",
+      "Soðin ýsa, kartöflur og laukfeiti",
+      "VAL NEMANDA",
+      "Tikka masala kjúklingur, hrísgrjón og nan brauð"
+    ]
+  },
+  {
+    "start": "2026-09-21",
+    "end": "2026-09-25",
+    "label": "21. - 25. september",
+    "meals": [
+      "SKIPULAGSDAGUR - FRÍ",
+      "Hakkabuff í kornflakeshjúp, kartöflur og sósa",
+      "Steiktur fiskur, kartöflur og köld sósa",
+      "Grjónagrautur, rúsínur og slátur",
+      "Kjúklingasnitsel, kartöflumús og brún sósa"
+    ]
+  },
+  {
+    "start": "2026-09-28",
+    "end": "2026-10-02",
+    "label": "28. september - 2. október",
+    "meals": [
+      "Mexíkófiskur og hrísgrjón",
+      "Lasagne",
+      "Nætursöltuð ýsa, kartöflur, rúgbrauð og laukfeiti",
+      "",
+      ""
+    ]
+  }
+]
