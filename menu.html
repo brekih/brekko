@@ -1,1 +1,292 @@
 
+<!DOCTYPE html>
+<html lang="is">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vikumatseðill Brekkubæjarskóla</title>
+  <style>
+    :root {
+      --red: #8c2d20;
+      --green: #365b50;
+      --paper: #fffdf8;
+      --row: #fbf5ed;
+      --text: #263b35;
+      --muted: #806d5f;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: transparent;
+      color: var(--text);
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    .menu-card {
+      width: 100vw;
+      height: 100vh;
+      min-height: 340px;
+      display: flex;
+      flex-direction: column;
+      padding: clamp(14px, 2.5vw, 28px);
+      background: linear-gradient(135deg, #fffdf8, #f5eee4);
+    }
+
+    .panel {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+      flex-direction: column;
+      padding: clamp(15px, 2.2vw, 28px);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 10px 30px rgba(78, 45, 30, 0.14);
+    }
+
+    .header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 14px;
+      padding-bottom: 12px;
+      border-bottom: 3px solid #ead9ca;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--red);
+      font-size: clamp(25px, 4.5vw, 54px);
+      line-height: 1;
+    }
+
+    #weekLabel {
+      color: var(--green);
+      font-size: clamp(13px, 2vw, 24px);
+      font-weight: 700;
+      text-align: right;
+    }
+
+    #menuList {
+      display: grid;
+      grid-template-rows: repeat(5, minmax(0, 1fr));
+      flex: 1;
+      min-height: 0;
+      gap: clamp(6px, 1.1vh, 11px);
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .menu-row {
+      display: grid;
+      grid-template-columns: clamp(112px, 23vw, 205px) 1fr;
+      min-height: 0;
+      overflow: hidden;
+      border-left: 7px solid var(--red);
+      border-radius: 13px;
+      background: var(--row);
+    }
+
+    .weekday {
+      display: grid;
+      place-items: center;
+      padding: 7px 10px;
+      background: var(--red);
+      color: white;
+      font-size: clamp(14px, 2.2vw, 25px);
+      font-weight: 800;
+    }
+
+    .meal {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      padding: 8px 15px;
+      font-size: clamp(15px, 2.5vw, 29px);
+      font-weight: 650;
+      line-height: 1.15;
+    }
+
+    .empty {
+      color: #8d857d;
+      font-style: italic;
+      font-weight: 500;
+    }
+
+    .footer {
+      padding-top: 8px;
+      color: var(--muted);
+      font-size: clamp(10px, 1.3vw, 14px);
+      text-align: right;
+    }
+
+    .status {
+      display: grid;
+      flex: 1;
+      place-items: center;
+      color: var(--red);
+      font-size: clamp(18px, 3vw, 30px);
+      font-weight: 700;
+      text-align: center;
+    }
+
+    @media (max-width: 520px) {
+      .header { align-items: start; flex-direction: column; }
+      #weekLabel { text-align: left; }
+      .menu-row { grid-template-columns: 105px 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="menu-card">
+    <section class="panel">
+      <header class="header">
+        <h1>Vikumatseðill</h1>
+        <div id="weekLabel"></div>
+      </header>
+
+      <ol id="menuList">
+        <li class="status">Sæki matseðil...</li>
+      </ol>
+
+      <div class="footer">Matseðill Brekkubæjarskóla</div>
+    </section>
+  </main>
+
+  <script>
+    const WEEKDAYS = [
+      "Mánudagur",
+      "Þriðjudagur",
+      "Miðvikudagur",
+      "Fimmtudagur",
+      "Föstudagur"
+    ];
+
+    let menus = [];
+    let shownMenuKey = "";
+
+    function getIcelandNow() {
+      const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Atlantic/Reykjavik",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hourCycle: "h23"
+      }).formatToParts(new Date());
+
+      const p = Object.fromEntries(parts.map(part => [part.type, part.value]));
+      return new Date(`${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:${p.second}`);
+    }
+
+    function toDateKey(date) {
+      return [
+        date.getFullYear(),
+        String(date.getMonth() + 1).padStart(2, "0"),
+        String(date.getDate()).padStart(2, "0")
+      ].join("-");
+    }
+
+    function addDays(date, count) {
+      const copy = new Date(date);
+      copy.setDate(copy.getDate() + count);
+      return copy;
+    }
+
+    function getEffectiveDate(now) {
+      const effective = new Date(now);
+      const isSaturday = effective.getDay() === 6;
+      const afterSwitch = effective.getHours() > 0 || effective.getMinutes() >= 1;
+
+      // Frá laugardegi kl. 00:01 er næsta vika valin.
+      if (isSaturday && afterSwitch) return addDays(effective, 2);
+
+      // Á sunnudegi er næsta vika einnig valin.
+      if (effective.getDay() === 0) return addDays(effective, 1);
+
+      return effective;
+    }
+
+    function selectMenu(now) {
+      const effectiveKey = toDateKey(getEffectiveDate(now));
+
+      const matchingMenu = menus.find(menu =>
+        effectiveKey >= menu.start && effectiveKey <= menu.end
+      );
+
+      if (matchingMenu) return matchingMenu;
+
+      return menus.find(menu => effectiveKey < menu.start) || menus.at(-1);
+    }
+
+    function renderMenu(menu) {
+      const weekLabel = document.getElementById("weekLabel");
+      const menuList = document.getElementById("menuList");
+
+      if (!menu) {
+        weekLabel.textContent = "";
+        menuList.innerHTML = '<li class="status">Enginn matseðill fannst.</li>';
+        return;
+      }
+
+      weekLabel.textContent = menu.label;
+      menuList.innerHTML = "";
+
+      WEEKDAYS.forEach((weekday, index) => {
+        const meal = menu.meals?.[index]?.trim() || "Ekki skráð";
+        const row = document.createElement("li");
+        row.className = "menu-row";
+
+        const dayElement = document.createElement("div");
+        dayElement.className = "weekday";
+        dayElement.textContent = weekday;
+
+        const mealElement = document.createElement("div");
+        mealElement.className = "meal" + (meal === "Ekki skráð" ? " empty" : "");
+        mealElement.textContent = meal;
+
+        row.append(dayElement, mealElement);
+        menuList.appendChild(row);
+      });
+    }
+
+    function refreshDisplayedMenu() {
+      const menu = selectMenu(getIcelandNow());
+      const key = menu ? `${menu.start}|${menu.end}` : "none";
+
+      if (key !== shownMenuKey) {
+        renderMenu(menu);
+        shownMenuKey = key;
+      }
+    }
+
+    async function loadMenus() {
+      try {
+        // cache: no-store tryggir að ný menus.json sé sótt eftir breytingar.
+        const response = await fetch("./data/menu.json", { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        menus = await response.json();
+        menus.sort((a, b) => a.start.localeCompare(b.start));
+        refreshDisplayedMenu();
+
+        // Athugar reglulega hvort komið sé yfir laugardagsmörkin 00:01.
+        setInterval(refreshDisplayedMenu, 15000);
+      } catch (error) {
+        console.error("Gat ekki sótt menus.json:", error);
+        document.getElementById("weekLabel").textContent = "";
+        document.getElementById("menuList").innerHTML =
+          '<li class="status">Ekki tókst að sækja matseðil.<br>Athugaðu data/menus.json.</li>';
+      }
+    }
+
+    loadMenus();
+  </script>
+</body>
+</html>
