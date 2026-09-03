@@ -1,207 +1,226 @@
 <!DOCTYPE html>
 <html lang="is">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brekkó klukka</title>
+  <style>
+    :root {
+      --red: #8c2d20;
+      --green: #365b50;
+      --dark: #321d18;
+      --tick: #9b7869;
+    }
 
-<title>Brekkó Klukka</title>
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; }
 
-<style>
-:root {
-    --red: #8c2d20;
-    --green: #365b50;
-}
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: transparent;
+      color: var(--dark);
+    }
 
-* {
-    box-sizing: border-box;
-}
+    .widget {
+      width: 100vw;
+      height: 100vh;
+      min-height: 330px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(10px, 2vw, 24px);
+      background: linear-gradient(135deg, #fffdf8, #f5eee4);
+    }
 
-html, body {
-    width: 100%;
-    height: 100%;
-}
+    .panel {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+      padding: clamp(12px, 2vw, 24px);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 10px 30px rgba(78, 45, 30, 0.14);
+    }
 
-body {
-    margin: 0;
-    overflow: hidden;
-    background: linear-gradient(135deg,#fffdf8,#f5eee4);
-    font-family: "Segoe UI", Arial, sans-serif;
-}
+    .today {
+      color: var(--red);
+      font-size: clamp(22px, 4.3vw, 52px);
+      font-weight: 800;
+      line-height: 1.05;
+      text-align: center;
+    }
 
-.wrapper {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
+    .date {
+      margin-top: 6px;
+      color: var(--green);
+      font-size: clamp(15px, 2.4vw, 30px);
+      font-weight: 650;
+      text-align: center;
+    }
 
-.today {
-    color: var(--red);
-    font-size: clamp(24px,3vw,48px);
-    font-weight: 800;
-    text-align: center;
-}
+    .clock {
+      position: relative;
+      flex: 0 1 auto;
+      width: min(70vw, 55vh, 430px);
+      aspect-ratio: 1;
+      margin: clamp(10px, 2vh, 22px) 0;
+      overflow: hidden;
+      border: clamp(8px, 1.2vw, 14px) solid var(--red);
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 43%, #ffffff 0 62%, #f4e9dd 100%);
+      box-shadow: inset 0 0 18px rgba(80, 35, 20, 0.15), 0 7px 19px rgba(80, 35, 20, 0.14);
+    }
 
-.date {
-    color: var(--green);
-    font-size: clamp(16px,2vw,28px);
-    margin-top: 8px;
-}
+    #ticks, #numbers {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+    }
 
-.clock {
-    position: relative;
-    width: min(50vw, 45vh, 400px);
-    aspect-ratio: 1;
-    margin: 20px 0;
+    .tick {
+      position: absolute;
+      left: 50%;
+      top: 2%;
+      width: 2px;
+      height: 4.2%;
+      margin-left: -1px;
+      border-radius: 3px;
+      background: var(--tick);
+      transform-origin: 50% 1142%;
+      z-index: 1;
+    }
 
-    border: 10px solid var(--red);
-    border-radius: 50%;
+    .tick.major {
+      top: 1.5%;
+      width: 4px;
+      height: 6.2%;
+      margin-left: -2px;
+      background: var(--red);
+      transform-origin: 50% 782%;
+    }
 
-    background: radial-gradient(circle at 50% 45%, #fff 0 62%, #f4e9dd 100%);
-}
+    .number {
+      position: absolute;
+      z-index: 2;
+      width: 14%;
+      height: 14%;
+      display: grid;
+      place-items: center;
+      color: #562018;
+      font-size: clamp(17px, 3.2vw, 34px);
+      font-weight: 850;
+      line-height: 1;
+      transform: translate(-50%, -50%);
+    }
 
-.number {
-    position: absolute;
-    z-index: 3;
-    width: 12%;
-    height: 12%;
+    .hand {
+      position: absolute;
+      left: 50%;
+      bottom: 50%;
+      z-index: 4;
+      border-radius: 99px;
+      transform: translateX(-50%) rotate(0deg);
+      transform-origin: 50% 100%;
+    }
 
-    display: grid;
-    place-items: center;
+    .hour-hand {
+      width: clamp(6px, 1.4%, 9px);
+      height: 25%;
+      background: var(--dark);
+    }
 
-    color: #562018;
-    font-size: clamp(17px,2vw,30px);
-    font-weight: 800;
+    .minute-hand {
+      width: clamp(4px, 1%, 6px);
+      height: 34%;
+      background: #4a4a4a;
+    }
 
-    transform: translate(-50%, -50%);
-}
+    .second-hand {
+      width: 2px;
+      height: 39%;
+      background: #d9362b;
+    }
 
-.tick {
-    position: absolute;
-    inset: 1.5%;
-    display: flex;
-    justify-content: center;
-    transform: rotate(calc(var(--i) * 6deg));
-}
+    .centre-pin {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 5;
+      width: 6%;
+      aspect-ratio: 1;
+      border: 3px solid white;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 0 2px var(--red);
+      transform: translate(-50%, -50%);
+    }
 
-.tick::before {
-    content: "";
-    width: 2px;
-    height: 3.2%;
-    background: #997465;
-}
+    .digital {
+      color: var(--red);
+      font-size: clamp(30px, 5vw, 62px);
+      font-weight: 850;
+      line-height: 1;
+      letter-spacing: 0.06em;
+    }
 
-.tick.major::before {
-    width: 4px;
-    height: 5%;
-    background: var(--red);
-}
-
-.hand {
-    position: absolute;
-    left: 50%;
-    bottom: 50%;
-    transform-origin: 50% 100%;
-    border-radius: 10px;
-}
-
-.hour {
-    width: 6px;
-    height: 25%;
-    background: #321d18;
-}
-
-.minute {
-    width: 4px;
-    height: 34%;
-    background: #444;
-}
-
-.second {
-    width: 2px;
-    height: 39%;
-    background: #d9362b;
-}
-
-.pin {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-
-    width: 18px;
-    height: 18px;
-
-    transform: translate(-50%, -50%);
-
-    border-radius: 50%;
-    background: var(--red);
-}
-
-.digital {
-    color: var(--red);
-    font-size: clamp(34px,4vw,60px);
-    font-weight: 800;
-    letter-spacing: .05em;
-}
-</style>
+    @media (max-height: 520px) and (min-aspect-ratio: 5/4) {
+      .panel {
+        display: grid;
+        grid-template-columns: 42% 58%;
+        grid-template-rows: auto auto auto;
+        column-gap: 18px;
+      }
+      .today, .date, .digital { grid-column: 1; }
+      .today { align-self: end; }
+      .date { align-self: center; }
+      .digital { align-self: start; text-align: center; }
+      .clock {
+        grid-column: 2;
+        grid-row: 1 / 4;
+        width: min(46vw, 88vh, 430px);
+        margin: auto;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <main class="widget">
+    <section class="panel">
+      <div class="today" id="todayText"></div>
+      <div class="date" id="dateText"></div>
 
-<div class="wrapper">
+      <div class="clock" aria-label="Hliðræn klukka">
+        <div id="ticks" aria-hidden="true"></div>
+        <div id="numbers" aria-hidden="true"></div>
+        <div class="hand hour-hand" id="hourHand"></div>
+        <div class="hand minute-hand" id="minuteHand"></div>
+        <div class="hand second-hand" id="secondHand"></div>
+        <div class="centre-pin"></div>
+      </div>
 
-    <div id="todayText" class="today"></div>
-    <div id="dateText" class="date"></div>
+      <div class="digital" id="digitalClock"></div>
+    </section>
+  </main>
 
-    <div class="clock">
+  <script>
+    const DAYS = [
+      "sunnudagur", "mánudagur", "þriðjudagur", "miðvikudagur",
+      "fimmtudagur", "föstudagur", "laugardagur"
+    ];
 
-        <div id="ticks"></div>
-        <div id="numbers"></div>
+    const MONTHS = [
+      "janúar", "febrúar", "mars", "apríl", "maí", "júní",
+      "júlí", "ágúst", "september", "október", "nóvember", "desember"
+    ];
 
-        <div id="hourHand" class="hand hour"></div>
-        <div id="minuteHand" class="hand minute"></div>
-        <div id="secondHand" class="hand second"></div>
-
-        <div class="pin"></div>
-
-    </div>
-
-    <div id="digitalClock" class="digital"></div>
-
-</div>
-
-<script>
-
-const days = [
-    "sunnudagur",
-    "mánudagur",
-    "þriðjudagur",
-    "miðvikudagur",
-    "fimmtudagur",
-    "föstudagur",
-    "laugardagur"
-];
-
-const months = [
-    "janúar",
-    "febrúar",
-    "mars",
-    "apríl",
-    "maí",
-    "júní",
-    "júlí",
-    "ágúst",
-    "september",
-    "október",
-    "nóvember",
-    "desember"
-];
-
-function icelandNow() {
-
-    const parts = new Intl.DateTimeFormat("en-CA", {
+    function getIcelandNow() {
+      const parts = new Intl.DateTimeFormat("en-CA", {
         timeZone: "Atlantic/Reykjavik",
         year: "numeric",
         month: "2-digit",
@@ -210,69 +229,73 @@ function icelandNow() {
         minute: "2-digit",
         second: "2-digit",
         hourCycle: "h23"
-    }).formatToParts(new Date());
+      }).formatToParts(new Date());
 
-    const p = Object.fromEntries(parts.map(x => [x.type, x.value]));
-
-    return new Date(
-        `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:${p.second}`
-    );
-}
-
-function buildClock() {
-
-    const numbers = document.getElementById("numbers");
-
-    for (let n = 1; n <= 12; n++) {
-
-        const el = document.createElement("div");
-        el.className = "number";
-
-        const angle = (n * 30 - 90) * Math.PI / 180;
-        const radius = 40;
-
-        el.style.left =
-            `${50 + radius * Math.cos(angle)}%`;
-
-        el.style.top =
-            `${50 + radius * Math.sin(angle)}%`;
-
-        el.textContent = n;
-
-        numbers.appendChild(el);
+      const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+      return new Date(
+        `${values.year}-${values.month}-${values.day}` +
+        `T${values.hour}:${values.minute}:${values.second}`
+      );
     }
 
-    const ticks = document.getElementById("ticks");
+    function buildClock() {
+      const ticks = document.getElementById("ticks");
+      const numbers = document.getElementById("numbers");
 
-    for (let i = 0; i < 60; i++) {
+      ticks.replaceChildren();
+      numbers.replaceChildren();
 
+      for (let minute = 0; minute < 60; minute++) {
         const tick = document.createElement("div");
-
-        tick.className =
-            "tick" + (i % 5 === 0 ? " major" : "");
-
-        tick.style.setProperty("--i", i);
-
+        tick.className = minute % 5 === 0 ? "tick major" : "tick";
+        tick.style.transform = `rotate(${minute * 6}deg)`;
         ticks.appendChild(tick);
+      }
+
+      for (let number = 1; number <= 12; number++) {
+        const item = document.createElement("div");
+        item.className = "number";
+
+        const angle = (number * 30 - 90) * Math.PI / 180;
+        const radius = 38;
+
+        item.style.left = `${50 + radius * Math.cos(angle)}%`;
+        item.style.top = `${50 + radius * Math.sin(angle)}%`;
+        item.textContent = number;
+        numbers.appendChild(item);
+      }
     }
-}
 
-function updateClock() {
+    function updateClock() {
+      const now = getIcelandNow();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
 
-    const now = icelandNow();
+      document.getElementById("todayText").textContent =
+        `Í dag er ${DAYS[now.getDay()]}!`;
 
-    document.getElementById("todayText").textContent =
-        `Í dag er ${days[now.getDay()]}!`;
+      document.getElementById("dateText").textContent =
+        `${now.getDate()}. ${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
 
-    document.getElementById("dateText").textContent =
-        `${now.getDate()}. ${months[now.getMonth()]} ${now.getFullYear()}`;
+      document.getElementById("digitalClock").textContent =
+        `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 
-    document.getElementById("digitalClock").textContent =
-        [now.getHours(), now.getMinutes()]
-            .map(v => String(v).padStart(2,"0"))
-            .join(":");
+      const secondDegrees = seconds * 6;
+      const minuteDegrees = minutes * 6 + seconds * 0.1;
+      const hourDegrees = (hours % 12) * 30 + minutes * 0.5 + seconds / 120;
 
-    document.getElementById("secondHand").style.transform =
-        `translateX(-50%) rotate(${now.getSeconds()*6}deg)`;
+      document.getElementById("secondHand").style.transform =
+        `translateX(-50%) rotate(${secondDegrees}deg)`;
+      document.getElementById("minuteHand").style.transform =
+        `translateX(-50%) rotate(${minuteDegrees}deg)`;
+      document.getElementById("hourHand").style.transform =
+        `translateX(-50%) rotate(${hourDegrees}deg)`;
+    }
 
-    document
+    buildClock();
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+</body>
+</html>
