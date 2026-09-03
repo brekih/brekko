@@ -4,154 +4,184 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Brekkó upplýsingaskjár</title>
+<title>Brekkó Klukka</title>
 
 <style>
+:root {
+    --red: #8c2d20;
+    --green: #365b50;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
 body {
     margin: 0;
-    background: #ffffff;
-    font-family: Segoe UI, Arial, sans-serif;
+    overflow: hidden;
+    background: linear-gradient(135deg,#fffdf8,#f5eee4);
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.today {
+    color: var(--red);
+    font-size: clamp(24px,3vw,48px);
+    font-weight: 800;
     text-align: center;
 }
 
-#dayText {
-    font-size: 42px;
-    font-weight: bold;
-    margin-top: 20px;
+.date {
+    color: var(--green);
+    font-size: clamp(16px,2vw,28px);
+    margin-top: 8px;
 }
 
-#dateText {
-    font-size: 28px;
-    margin-top: 5px;
+.clock {
+    position: relative;
+    width: min(50vw, 45vh, 400px);
+    aspect-ratio: 1;
+    margin: 20px 0;
+
+    border: 10px solid var(--red);
+    border-radius: 50%;
+
+    background: radial-gradient(circle at 50% 45%, #fff 0 62%, #f4e9dd 100%);
 }
 
- .widget {
-      width: 100vw;
-      height: 100vh;
-      min-height: 360px;
-      display: grid;
-      grid-template-columns: minmax(280px, 42%) minmax(360px, 58%);
-      gap: clamp(12px, 2vw, 28px);
-      padding: clamp(12px, 2vw, 28px);
-      background: linear-gradient(135deg, #fffdf8, #f5eee4);
-    }
-    .clock-panel, .menu-panel {
-      border-radius: 24px;
-      background: rgba(255,255,255,.94);
-      box-shadow: 0 10px 30px rgba(78, 45, 30, .14);
-    }
-    .clock-panel {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-    .today {
-      margin-bottom: 10px;
-      text-align: center;
-      color: var(--red);
-      font-size: clamp(22px, 3.2vw, 46px);
-      font-weight: 750;
-    }
-    .date {
-      margin-bottom: 16px;
-      color: var(--green);
-      font-size: clamp(15px, 1.8vw, 26px);
-    }
-    .clock {
-      position: relative;
-      width: min(31vw, 39vh, 330px);
-      aspect-ratio: 1;
-      border: clamp(7px, 1vw, 13px) solid var(--red);
-      border-radius: 50%;
-      background: radial-gradient(circle at 50% 45%, #fff 0 62%, #f4e9dd 100%);
-      box-shadow: inset 0 0 18px rgba(80,35,20,.15), 0 7px 19px rgba(80,35,20,.14);
-    }
-    .number {
-      position: absolute;
-      z-index: 3;
-      width: 12%;
-      height: 12%;
-      display: grid;
-      place-items: center;
-      color: #562018;
-      font-size: clamp(15px, 2.1vw, 29px);
-      font-weight: 800;
-      line-height: 1;
-      transform: translate(-50%, -50%);
-    }
-    .tick {
-      position: absolute;
-      inset: 1.5%;
-      display: flex;
-      justify-content: center;
-      transform: rotate(calc(var(--i) * 6deg));
-    }
-    .tick::before {
-      content: "";
-      width: 2px;
-      height: 3.2%;
-      background: #997465;
-      border-radius: 2px;
-    }
-    .tick.major::before { width: 4px; height: 5%; background: var(--red); }
-    .hand {
-      position: absolute;
-      left: 50%;
-      bottom: 50%;
-      transform-origin: 50% 100%;
-      border-radius: 8px;
-      transform: translateX(-50%) rotate(0deg);
-    }
-    .hour { width: 6px; height: 25%; background: #321d18; }
-    .minute { width: 4px; height: 34%; background: #4c4c4c; }
-    .second { width: 2px; height: 39%; background: #d9362b; }
-    .pin {
-      position: absolute;
-      width: 5.5%;
-      aspect-ratio: 1;
-      left: 50%; top: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      background: var(--red);
-      border: 3px solid #fff;
-      box-shadow: 0 0 0 2px var(--red);
-    }
-    .digital {
-      margin-top: 12px;
-      color: var(--red);
-      font-size: clamp(28px, 4vw, 54px);
-      font-weight: 800;
-      letter-spacing: .06em;
-    }
+.number {
+    position: absolute;
+    z-index: 3;
+    width: 12%;
+    height: 12%;
+
+    display: grid;
+    place-items: center;
+
+    color: #562018;
+    font-size: clamp(17px,2vw,30px);
+    font-weight: 800;
+
+    transform: translate(-50%, -50%);
+}
+
+.tick {
+    position: absolute;
+    inset: 1.5%;
+    display: flex;
+    justify-content: center;
+    transform: rotate(calc(var(--i) * 6deg));
+}
+
+.tick::before {
+    content: "";
+    width: 2px;
+    height: 3.2%;
+    background: #997465;
+}
+
+.tick.major::before {
+    width: 4px;
+    height: 5%;
+    background: var(--red);
+}
+
+.hand {
+    position: absolute;
+    left: 50%;
+    bottom: 50%;
+    transform-origin: 50% 100%;
+    border-radius: 10px;
+}
+
+.hour {
+    width: 6px;
+    height: 25%;
+    background: #321d18;
+}
+
+.minute {
+    width: 4px;
+    height: 34%;
+    background: #444;
+}
+
+.second {
+    width: 2px;
+    height: 39%;
+    background: #d9362b;
+}
+
+.pin {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    width: 18px;
+    height: 18px;
+
+    transform: translate(-50%, -50%);
+
+    border-radius: 50%;
+    background: var(--red);
+}
+
+.digital {
+    color: var(--red);
+    font-size: clamp(34px,4vw,60px);
+    font-weight: 800;
+    letter-spacing: .05em;
+}
 </style>
 </head>
 
 <body>
 
-<div id="dayText"></div>
-<div id="dateText"></div>
+<div class="wrapper">
 
-<div class="clock">
-    <div class="hand hour" id="hour"></div>
-    <div class="hand minute" id="minute"></div>
-    <div class="hand second" id="second"></div>
-    <div class="center"></div>
+    <div id="todayText" class="today"></div>
+    <div id="dateText" class="date"></div>
+
+    <div class="clock">
+
+        <div id="ticks"></div>
+        <div id="numbers"></div>
+
+        <div id="hourHand" class="hand hour"></div>
+        <div id="minuteHand" class="hand minute"></div>
+        <div id="secondHand" class="hand second"></div>
+
+        <div class="pin"></div>
+
+    </div>
+
+    <div id="digitalClock" class="digital"></div>
+
 </div>
-
-<div id="digital"></div>
 
 <script>
 
 const days = [
-    "Sunnudagur",
-    "Mánudagur",
-    "Þriðjudagur",
-    "Miðvikudagur",
-    "Fimmtudagur",
-    "Föstudagur",
-    "Laugardagur"
+    "sunnudagur",
+    "mánudagur",
+    "þriðjudagur",
+    "miðvikudagur",
+    "fimmtudagur",
+    "föstudagur",
+    "laugardagur"
 ];
 
 const months = [
@@ -169,39 +199,80 @@ const months = [
     "desember"
 ];
 
-function updateClock() {
+function icelandNow() {
 
-    const now = new Date();
+    const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Atlantic/Reykjavik",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hourCycle: "h23"
+    }).formatToParts(new Date());
 
-    document.getElementById("dayText").innerHTML =
-        "Í dag er " + days[now.getDay()] + "!";
+    const p = Object.fromEntries(parts.map(x => [x.type, x.value]));
 
-    document.getElementById("dateText").innerHTML =
-        now.getDate() + ". " +
-        months[now.getMonth()] + " " +
-        now.getFullYear();
-
-    const sec = now.getSeconds();
-    const min = now.getMinutes();
-    const hour = now.getHours();
-
-    document.getElementById("second").style.transform =
-        `translateX(-50%) rotate(${sec * 6}deg)`;
-
-    document.getElementById("minute").style.transform =
-        `translateX(-50%) rotate(${min * 6}deg)`;
-
-    document.getElementById("hour").style.transform =
-        `translateX(-50%) rotate(${hour * 30 + min / 2}deg)`;
-
-    document.getElementById("digital").innerHTML =
-        now.toLocaleTimeString('is-IS');
+    return new Date(
+        `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:${p.second}`
+    );
 }
 
-updateClock();
-setInterval(updateClock, 1000);
+function buildClock() {
 
-</script>
+    const numbers = document.getElementById("numbers");
 
-</body>
-</html>
+    for (let n = 1; n <= 12; n++) {
+
+        const el = document.createElement("div");
+        el.className = "number";
+
+        const angle = (n * 30 - 90) * Math.PI / 180;
+        const radius = 40;
+
+        el.style.left =
+            `${50 + radius * Math.cos(angle)}%`;
+
+        el.style.top =
+            `${50 + radius * Math.sin(angle)}%`;
+
+        el.textContent = n;
+
+        numbers.appendChild(el);
+    }
+
+    const ticks = document.getElementById("ticks");
+
+    for (let i = 0; i < 60; i++) {
+
+        const tick = document.createElement("div");
+
+        tick.className =
+            "tick" + (i % 5 === 0 ? " major" : "");
+
+        tick.style.setProperty("--i", i);
+
+        ticks.appendChild(tick);
+    }
+}
+
+function updateClock() {
+
+    const now = icelandNow();
+
+    document.getElementById("todayText").textContent =
+        `Í dag er ${days[now.getDay()]}!`;
+
+    document.getElementById("dateText").textContent =
+        `${now.getDate()}. ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+    document.getElementById("digitalClock").textContent =
+        [now.getHours(), now.getMinutes()]
+            .map(v => String(v).padStart(2,"0"))
+            .join(":");
+
+    document.getElementById("secondHand").style.transform =
+        `translateX(-50%) rotate(${now.getSeconds()*6}deg)`;
+
+    document
