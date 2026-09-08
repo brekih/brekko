@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+<meta charset="UTF-8">
+
+<style>
+
+body{
+    margin:0;
+    font-family:Segoe UI;
+    background:#f0b470;
+}
+
+.wrapper{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+    padding:10px;
+}
+
+.card{
+    background:#efb36f;
+    border-radius:10px;
+    padding:10px;
+    text-align:center;
+}
+
+.day{
+    font-size:28px;
+    font-weight:700;
+    color:#a10f0f;
+    margin-bottom:10px;
+}
+
+.meal{
+    font-size:18px;
+    color:#a10f0f;
+    min-height:90px;
+}
+
+img{
+    width:170px;
+    height:170px;
+    object-fit:contain;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="wrapper" id="menuContainer"></div>
+
+<script>
+
+let menus=[];
+
+async function loadMenus() {
+
+    const response =
+        await fetch("./data/menus.json",{cache:"no-store"});
+
+    menus = await response.json();
+
+    renderCurrentWeek();
+}
+
+function todayKey() {
+
+    const d = new Date();
+
+    return d.getFullYear() + "-" +
+        String(d.getMonth()+1).padStart(2,"0") + "-" +
+        String(d.getDate()).padStart(2,"0");
+}
+
+function currentMenu() {
+
+    const today = todayKey();
+
+    return menus.find(m =>
+        today >= m.start &&
+        today <= m.end
+    );
+}
+
+function renderCurrentWeek(){
+
+    const week = currentMenu();
+
+    const target =
+        document.getElementById("menuContainer");
+
+    target.innerHTML="";
+
+    week.days.forEach(day=>{
+
+        const card =
+            document.createElement("div");
+
+        card.className="card";
+
+        const imagePath =
+            "./menu_pictures/" + day.image;
+
+        card.innerHTML = `
+            <div class="day">${day.day}</div>
+
+            <div class="meal">
+                ${day.meal}
+            </div>
+
+            <img
+                src="${imagePath}"
+                onerror="
+                    this.src='./menu_pictures/placeholder.png';
+                "
+            >
+        `;
+
+        target.appendChild(card);
+
+    });
+}
+
+loadMenus();
+
+</script>
+
+</body>
+</html>
