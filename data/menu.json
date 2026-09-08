@@ -9,6 +9,13 @@
       "Vanilluskyr og smurt brauð",
       "Kjúklingabollur, hrísgrjón og súrsæt sósa",
       ""
+    ],
+    "images": [
+      "hakk_spaghetti.png",
+      "sodin_ysa.png",
+      "vanilluskyr.png",
+      "kjuklingabollur.png",
+      "placeholder.png"
     ]
   },
   {
@@ -21,6 +28,13 @@
       "Nætursöltuð ýsa, kartöflur, rúgbrauð og laukfeiti",
       "Pylsupasta",
       "Kjúklingalasagne"
+    ],
+    "images": [
+      "kentuckyfiskur.png",
+      "kjotfarsbollur.png",
+      "naetursoltud_ysa.png",
+      "pylsupasta.png",
+      "kjuklingalasagne.png"
     ]
   },
   {
@@ -33,6 +47,13 @@
       "Soðin ýsa, kartöflur og laukfeiti",
       "VAL NEMANDA",
       "Tikka masala kjúklingur, hrísgrjón og nan brauð"
+    ],
+    "images": [
+      "fiskibollur.png",
+      "nautagullas.png",
+      "sodin_ysa.png",
+      "placeholder.png",
+      "tikka_masala.png"
     ]
   },
   {
@@ -45,6 +66,13 @@
       "Steiktur fiskur, kartöflur og köld sósa",
       "Grjónagrautur, rúsínur og slátur",
       "Kjúklingasnitsel, kartöflumús og brún sósa"
+    ],
+    "images": [
+      "placeholder.png",
+      "hakkabuff.png",
+      "steiktur_fiskur.png",
+      "grjonagrautur.png",
+      "kjuklingasnitsel.png"
     ]
   },
   {
@@ -57,6 +85,13 @@
       "Nætursöltuð ýsa, kartöflur, rúgbrauð og laukfeiti",
       "",
       ""
+    ],
+    "images": [
+      "mexikofiskur.png",
+      "lasagne.png",
+      "naetursoltud_ysa.png",
+      "placeholder.png",
+      "placeholder.png"
     ]
   }
 ]
