@@ -106,39 +106,99 @@ function currentMenu() {
     );
 }
 
-function renderCurrentWeek(){
+function renderCurrentWeek() {
 
     const week = currentMenu();
-    const target = document.getElementById("menuContainer");
+
+    const target =
+        document.getElementById("menuContainer");
 
     target.innerHTML = "";
 
-    if(!week){
+    if (!week) {
         target.innerHTML =
             '<div class="error">Engin matskrá fannst</div>';
         return;
     }
 
-    week.days.forEach(day => {
+    const dayNames = [
+        "Mánudagur",
+        "Þriðjudagur",
+        "Miðvikudagur",
+        "Fimmtudagur",
+        "Föstudagur"
+    ];
 
-        const card = document.createElement("div");
+    week.meals.forEach((meal, index) => {
+
+        const card =
+            document.createElement("div");
 
         card.className = "card";
 
         const imagePath =
             "./menu_pictures/" +
-            (day.image || "placeholder.png");
+            (week.images[index] || "placeholder.png");
 
         card.innerHTML = `
-            <div class="day">${day.day}</div>
+            <div class="day">
+                ${dayNames[index]}
+            </div>
 
-            <div class="meal">${day.meal}</div>
+            <div class="meal">
+                ${meal || ""}
+            </div>
 
-            <img
-                src="${imagePath}"
-                alt="${day.day}"
-                onerror="this.src='./menu_pictures/placeholder.png'"
-            >
+            ${imagePath}
+        `;
+
+        target.appendChild(card);
+    });
+}
+function renderCurrentWeek() {
+
+    const week = currentMenu();
+
+    const target =
+        document.getElementById("menuContainer");
+
+    target.innerHTML = "";
+
+    if (!week) {
+        target.innerHTML =
+            '<div class="error">Engin matskrá fannst</div>';
+        return;
+    }
+
+    const dayNames = [
+        "Mánudagur",
+        "Þriðjudagur",
+        "Miðvikudagur",
+        "Fimmtudagur",
+        "Föstudagur"
+    ];
+
+    week.meals.forEach((meal, index) => {
+
+        const card =
+            document.createElement("div");
+
+        card.className = "card";
+
+        const imagePath =
+            "./menu_pictures/" +
+            (week.images[index] || "placeholder.png");
+
+        card.innerHTML = `
+            <div class="day">
+                ${dayNames[index]}
+            </div>
+
+            <div class="meal">
+                ${meal || ""}
+            </div>
+
+            ${imagePath}
         `;
 
         target.appendChild(card);
