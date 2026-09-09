@@ -128,9 +128,7 @@ function currentMenu() {
 function renderCurrentWeek() {
 
     const week = currentMenu();
-
-    const target =
-        document.getElementById("menuContainer");
+    const target = document.getElementById("menuContainer");
 
     target.innerHTML = "";
 
@@ -150,9 +148,7 @@ function renderCurrentWeek() {
 
     week.meals.forEach((meal, index) => {
 
-        const card =
-            document.createElement("div");
-
+        const card = document.createElement("div");
         card.className = "card";
 
         const imagePath =
@@ -160,25 +156,25 @@ function renderCurrentWeek() {
             (week.images[index] || "placeholder.png");
 
         card.innerHTML = `
-    <div class="day">
-        ${dayNames[index]}
-    </div>
+            <div class="day">
+                ${dayNames[index]}
+            </div>
 
-    <div class="meal">
-        ${meal || ""}
-    </div>
+            <div class="meal">
+                ${meal || ""}
+            </div>
 
-    <div class="menu-image">
-    <img
-        src=${imagePath}
-        alt=${meal || "Matur"}
-        />
-        </div>
-        
-    </div>
-`;
+            <div class="menu-image">
+                <img
+                src=${imagePath}
+                alt=${meal || "Matur"}
+                />
+                
+            </div>
+        `;
 
         target.appendChild(card);
+
     });
 }
 function renderCurrentWeek() {
