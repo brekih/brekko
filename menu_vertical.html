@@ -177,55 +177,6 @@ function renderCurrentWeek() {
 
     });
 }
-function renderCurrentWeek() {
-
-    const week = currentMenu();
-
-    const target =
-        document.getElementById("menuContainer");
-
-    target.innerHTML = "";
-
-    if (!week) {
-        target.innerHTML =
-            '<div class="error">Engin matskrá fannst</div>';
-        return;
-    }
-
-    const dayNames = [
-        "Mánudagur",
-        "Þriðjudagur",
-        "Miðvikudagur",
-        "Fimmtudagur",
-        "Föstudagur"
-    ];
-
-    week.meals.forEach((meal, index) => {
-
-        const card =
-            document.createElement("div");
-
-        card.className = "card";
-
-        const imagePath =
-            "./menu_pictures/" +
-            (week.images[index] || "placeholder.png");
-
-        card.innerHTML = `
-            <div class="day">
-                ${dayNames[index]}
-            </div>
-
-            <div class="meal">
-                ${meal || ""}
-            </div>
-
-            ${imagePath}
-        `;
-
-        target.appendChild(card);
-    });
-}
 
 loadMenus();
 
