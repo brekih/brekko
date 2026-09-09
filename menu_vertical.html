@@ -58,7 +58,7 @@ let menus=[];
 async function loadMenus() {
 
     const response =
-        await fetch("./data/menus.json",{cache:"no-store"});
+        await fetch("./data/menu.json",{cache:"no-store"});
 
     menus = await response.json();
 
@@ -78,7 +78,7 @@ function currentMenu() {
 
     const today = todayKey();
 
-    return menus.find(m =>
+    return .find(m =>
         today >= m.start &&
         today <= m.end
     );
@@ -123,7 +123,7 @@ function renderCurrentWeek(){
     });
 }
 
-loadMenus();
+load();
 
 </script>
 
