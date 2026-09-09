@@ -78,7 +78,7 @@ function currentMenu() {
 
     const today = todayKey();
 
-    return .find(m =>
+    return menus.find(m =>
         today >= m.start &&
         today <= m.end
     );
