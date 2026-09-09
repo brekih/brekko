@@ -21,23 +21,42 @@ body{
 .card{
     background:#f6c283;
     border-radius:16px;
-    padding:15px;
+    overflow:hidden;
     text-align:center;
 }
 
 .day{
-    font-size:28px;
+    background:#a32018;
+    color:white;
+    padding:15px;
+    margin:-15px -15px 15px -15px;
+    font-size:30px;
     font-weight:700;
-    color:#9a2415;
-    margin-bottom:10px;
+    border-top-left-radius:16px;
+    border-top-right-radius:16px;
 }
 
 .meal{
-    font-size:20px;
-    font-weight:600;
+    padding:20px;
     color:#9a2415;
-    min-height:80px;
-    margin-bottom:15px;
+    font-size:24px;
+    font-weight:600;
+    min-height:90px;
+    text-align:center;
+}
+
+.menu-image{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:15px;
+}
+
+.menu-image img{
+    max-width:100%;
+    max-height:180px;
+    object-fit:contain;
 }
 
 img{
@@ -141,16 +160,18 @@ function renderCurrentWeek() {
             (week.images[index] || "placeholder.png");
 
         card.innerHTML = `
-            <div class="day">
-                ${dayNames[index]}
-            </div>
+    <div class="day">
+        ${dayNames[index]}
+    </div>
 
-            <div class="meal">
-                ${meal || ""}
-            </div>
+    <div class="meal">
+        ${meal || ""}
+    </div>
 
-            ${imagePath}
-        `;
+    <div class="menu-image">
+        ${imagePath}
+    </div>
+`;
 
         target.appendChild(card);
     });
