@@ -2,40 +2,42 @@
 <html lang="is">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-
 body{
     margin:0;
-    font-family:Segoe UI;
+    font-family:'Segoe UI',sans-serif;
     background:#f0b470;
 }
 
 .wrapper{
     display:grid;
     grid-template-columns:repeat(5,1fr);
-    gap:10px;
-    padding:10px;
+    gap:12px;
+    padding:12px;
 }
 
 .card{
-    background:#efb36f;
-    border-radius:10px;
-    padding:10px;
+    background:#f6c283;
+    border-radius:16px;
+    padding:15px;
     text-align:center;
 }
 
 .day{
     font-size:28px;
     font-weight:700;
-    color:#a10f0f;
+    color:#9a2415;
     margin-bottom:10px;
 }
 
 .meal{
-    font-size:18px;
-    color:#a10f0f;
-    min-height:90px;
+    font-size:20px;
+    font-weight:600;
+    color:#9a2415;
+    min-height:80px;
+    margin-bottom:15px;
 }
 
 img{
@@ -44,6 +46,11 @@ img{
     object-fit:contain;
 }
 
+.error{
+    color:#9a2415;
+    font-size:32px;
+    padding:20px;
+}
 </style>
 </head>
 
@@ -53,16 +60,31 @@ img{
 
 <script>
 
-let menus=[];
+let menus = [];
 
 async function loadMenus() {
 
-    const response =
-        await fetch("./data/menu.json",{cache:"no-store"});
+    try {
 
-    menus = await response.json();
+        const response = await fetch("./data/menu.json", {
+            cache: "no-store"
+        });
 
-    renderCurrentWeek();
+        if (!response.ok) {
+            throw new Error("menu.json fannst ekki");
+        }
+
+        menus = await response.json();
+
+        renderCurrentWeek();
+
+    } catch(err) {
+
+        console.error(err);
+
+        document.getElementById("menuContainer").innerHTML =
+            '<div class="error">Villa við að hlaða matskrá</div>';
+    }
 }
 
 function todayKey() {
@@ -78,52 +100,52 @@ function currentMenu() {
 
     const today = todayKey();
 
-    return menus.find(m =>
-        today >= m.start &&
-        today <= m.end
+    return menus.find(menu =>
+        today >= menu.start &&
+        today <= menu.end
     );
 }
 
 function renderCurrentWeek(){
 
     const week = currentMenu();
+    const target = document.getElementById("menuContainer");
 
-    const target =
-        document.getElementById("menuContainer");
+    target.innerHTML = "";
 
-    target.innerHTML="";
+    if(!week){
+        target.innerHTML =
+            '<div class="error">Engin matskrá fannst</div>';
+        return;
+    }
 
-    week.days.forEach(day=>{
+    week.days.forEach(day => {
 
-        const card =
-            document.createElement("div");
+        const card = document.createElement("div");
 
-        card.className="card";
+        card.className = "card";
 
         const imagePath =
-            "./menu_pictures/" + day.image;
+            "./menu_pictures/" +
+            (day.image || "placeholder.png");
 
         card.innerHTML = `
             <div class="day">${day.day}</div>
 
-            <div class="meal">
-                ${day.meal}
-            </div>
+            <div class="meal">${day.meal}</div>
 
             <img
                 src="${imagePath}"
-                onerror="
-                    this.src='./menu_pictures/placeholder.png';
-                "
+                alt="${day.day}"
+                onerror="this.src='./menu_pictures/placeholder.png'"
             >
         `;
 
         target.appendChild(card);
-
     });
 }
 
-load();
+loadMenus();
 
 </script>
 
