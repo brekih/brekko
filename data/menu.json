@@ -1,126 +1,97 @@
 [
   {
+    "start": "2026-08-31",
+    "end": "2026-09-04",
+    "label": "31. ágúst - 4. september",
+    "meals": [
+      "Hakk og spaghetti",
+      "Soðin ýsa, kartöflur, rúgbrauð og laukfeiti",
+      "Vanilluskyr og smurt brauð",
+      "Kjúklingabollur, hrísgrjón og súrsæt sósa",
+      ""
+    ],
+    "images": [
+      "hakk_spaghetti.png",
+      "sodin_ysa.png",
+      "vanilluskyr.png",
+      "kjuklingabollur.png",
+      "placeholder.png"
+    ]
+  },
+  {
     "start": "2026-09-07",
     "end": "2026-09-11",
-    "days": [
-      {
-        "day": "Mánudagur",
-        "meal": "Kentuckyfiskur, hrísgrjón og köld sósa",
-        "image": "placeholder.png"
-      },
-      {
-        "day": "Þriðjudagur",
-        "meal": "Kjötfarsbollur, kartöflur og feiti",
-        "image": "placeholder.png"
-      },
-      {
-        "day": "Miðvikudagur",
-        "meal": "Nætursöltuð ýsa, kartöflur, rúgbrauð og laukfeiti",
-        "image": "placeholder.png"
-      },
-      {
-        "day": "Fimmtudagur",
-        "meal": "Pylsupasta",
-        "image": "placeholder.png"
-      },
-      {
-        "day": "Föstudagur",
-        "meal": "Kjúklingalasagne",
-        "image": "placeholder.png"
-      }
+    "label": "7. - 11. september",
+    "meals": [
+      "Kentuckýfiskur, hrísgrjón og köld sósa",
+      "Kjötfarsbollur, kartöflur og feiti",
+      "Nætursöltuð ýsa, kartöflur, rúgbrauð og laukfeiti",
+      "Pylsupasta",
+      "Kjúklingalasagne"
+    ],
+    "images": [
+      "kentuckyfiskur.png",
+      "kjotfarsbollur.png",
+      "naetursoltud_ysa.png",
+      "pylsupasta.png",
+      "kjuklingalasagne.png"
     ]
   },
   {
     "start": "2026-09-14",
     "end": "2026-09-18",
-    "days": [
-      {
-        "day": "Mánudagur",
-        "meal": "TBA",
-        "image": "placeholder.png"
-      },
-      {
-        "day": "Þriðjudagur",
-        "meal": "TBA",
-        "image": "placeholder.png"
-      },
-      {
-        "day": "Miðvikudagur",
-        "meal": "TBA",
-        "image": "placeholder.png"
-      },
-      {
-        "day": "Fimmtudagur",
-        "meal": "TBA",
-        "image": "placeholder.png"
-      },
-      {
-        "day": "Föstudagur",
-        "meal": "TBA",
-        "image": "placeholder.png"
-      }
+    "label": "14. - 18. september",
+    "meals": [
+      "Fiskibollur, hrísgrjón og karrýsósa",
+      "Nautagúllas, kartöflumús, brún sósa og sulta",
+      "Soðin ýsa, kartöflur og laukfeiti",
+      "VAL NEMANDA",
+      "Tikka masala kjúklingur, hrísgrjón og nan brauð"
+    ],
+    "images": [
+      "fiskibollur.png",
+      "nautagullas.png",
+      "sodin_ysa.png",
+      "placeholder.png",
+      "tikka_masala.png"
     ]
   },
   {
     "start": "2026-09-21",
     "end": "2026-09-25",
-    "days": [
-      {
-        "day": "Mánudagur",
-        "meal": "TBA",
-        "image": "placeholder.png"
-      },
-      {
-        "day": "Þriðjudagur",
-        "meal": "TBA",
-        "image": "placeholder.png"
-      },
-      {
-        "day": "Miðvikudagur",
-        "meal": "TBA",
-        "image": "placeholder.png"
-      },
-      {
-        "day": "Fimmtudagur",
-        "meal": "TBA",
-        "image": "placeholder.png"
-      },
-      {
-        "day": "Föstudagur",
-        "meal": "TBA",
-        "image": "placeholder.png"
-      }
+    "label": "21. - 25. september",
+    "meals": [
+      "SKIPULAGSDAGUR - FRÍ",
+      "Hakkabuff í kornflakeshjúp, kartöflur og sósa",
+      "Steiktur fiskur, kartöflur og köld sósa",
+      "Grjónagrautur, rúsínur og slátur",
+      "Kjúklingasnitsel, kartöflumús og brún sósa"
+    ],
+    "images": [
+      "placeholder.png",
+      "hakkabuff.png",
+      "steiktur_fiskur.png",
+      "grjonagrautur.png",
+      "kjuklingasnitsel.png"
     ]
   },
   {
     "start": "2026-09-28",
     "end": "2026-10-02",
-    "days": [
-      {
-        "day": "Mánudagur",
-        "meal": "TBA",
-        "image": "placeholder.png"
-      },
-      {
-        "day": "Þriðjudagur",
-        "meal": "TBA",
-        "image": "placeholder.png"
-      },
-      {
-        "day": "Miðvikudagur",
-        "meal": "TBA",
-        "image": "placeholder.png"
-      },
-      {
-        "day": "Fimmtudagur",
-        "meal": "TBA",
-        "image": "placeholder.png"
-      },
-      {
-        "day": "Föstudagur",
-        "meal": "TBA",
-        "image": "placeholder.png"
-      }
+    "label": "28. september - 2. október",
+    "meals": [
+      "Mexíkófiskur og hrísgrjón",
+      "Lasagne",
+      "Nætursöltuð ýsa, kartöflur, rúgbrauð og laukfeiti",
+      "",
+      ""
+    ],
+    "images": [
+      "mexikofiskur.png",
+      "lasagne.png",
+      "naetursoltud_ysa.png",
+      "placeholder.png",
+      "placeholder.png"
     ]
   }
 ]
