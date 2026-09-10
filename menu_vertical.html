@@ -8,7 +8,7 @@
 body{
     margin:0;
     font-family:'Segoe UI',sans-serif;
-    background:#f0b470;
+    background:transparent;
 }
 
 .wrapper{
@@ -20,49 +20,50 @@ body{
 
 .card{
     background:#f6c283;
-    border-radius:16px;
+    border-radius:20px;
     overflow:hidden;
-    text-align:center;
+    display:flex;
+    flex-direction:column;
+    min-height:280px;
 }
 
 .day{
     background:#a32018;
     color:white;
     padding:15px;
-    margin:-15px -15px 15px -15px;
     font-size:clamp(18px, 2vw, 30px);
     font-weight:700;
     border-top-left-radius:16px;
     border-top-right-radius:16px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
 }
 
 .meal{
-    padding:20px;
+    padding:10px;
     color:#9a2415;
-    font-size:clamp(14px, 1.5vw, 22px);
+    font-size:clamp(25px, 1.5vw, 28px);
     font-weight:600;
     min-height:90px;
     text-align:center;
 }
 
 .menu-image{
-    flex:1;
+    margin-top:auto;
     display:flex;
     justify-content:center;
-    align-items:center;
-    padding:15px;
+    align-items:flex-end;
+    padding:10px;
 }
 
 .menu-image img{
-    max-width:100%;
-    max-height:180px;
+    width:180px;
+    height:150px;
     object-fit:contain;
-}
-
-img{
-    width:170px;
-    height:170px;
-    object-fit:contain;
+    display:block;
 }
 
 .error{
@@ -70,6 +71,32 @@ img{
     font-size:32px;
     padding:20px;
 }
+.today-banner{
+    margin-top:20px;
+    background:#a32018;
+    color:#f6c283;
+    font-size:48px;
+    text-align:center;
+    padding:20px;
+    border-radius:20px;
+    font-weight:300;
+}
+
+.food-banner{
+    margin-top:12px;
+    background:#f6c283;
+    color:#a32018;
+    font-size:56px;
+    text-align:center;
+    padding:20px;
+    border-radius:20px;
+    font-weight:700;
+}
+.today-wrapper{
+    grid-column:1 / -1;
+    width:100%;
+}
+
 </style>
 </head>
 
@@ -125,10 +152,44 @@ function currentMenu() {
     );
 }
 
+function getTodayInfo() {
+
+    const today = new Date();
+
+    const weekday = today.getDay();
+
+    const dayNames = [
+        "Sunnudagur",
+        "Mánudagur",
+        "Þriðjudagur",
+        "Miðvikudagur",
+        "Fimmtudagur",
+        "Föstudagur",
+        "Laugardagur"
+    ];
+
+    const week = currentMenu();
+
+    if (!week) {
+        return null;
+    }
+
+    const mealIndex = weekday - 1;
+
+    return {
+        dayName: dayNames[weekday],
+        meal:
+            mealIndex >= 0 && mealIndex < 5
+                ? week.meals[mealIndex]
+                : "Enginn skólamatur í dag"
+    };
+}
+
 function renderCurrentWeek() {
 
     const week = currentMenu();
     const target = document.getElementById("menuContainer");
+    const todayInfo = getTodayInfo();
 
     target.innerHTML = "";
 
@@ -166,16 +227,32 @@ function renderCurrentWeek() {
 
             <div class="menu-image">
                 <img
-                src="${imagePath}"
-                alt="${meal || "Matur"}"
-                >
-                
+                    src="${imagePath}"
+                    >
+            </div>
+            `;
+               target.appendChild(card);
+               
+
+    });
+
+    if (todayInfo) {
+
+        const todayBanner = document.createElement("div");
+        todayBanner.className = "today-wrapper";
+
+        todayBanner.innerHTML = `
+            <div class="today-banner">
+                Það er ${(todayInfo.dayName || "").toLowerCase()} í dag!
+            </div>
+
+            <div class="food-banner">
+                ${todayInfo.meal}
             </div>
         `;
 
-        target.appendChild(card);
-
-    });
+        target.appendChild(todayBanner);
+    }
 }
 
 loadMenus();
