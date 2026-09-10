@@ -237,14 +237,14 @@ function renderCurrentWeek() {
         todayBanner.className = "today-wrapper";
 
         todayBanner.innerHTML = `
-    <div class="today-banner">
-        Það er ${todayInfo.dayName} í dag!
-    </div>
+            <div class="today-banner">
+                Það er ${todayInfo.dayName} í dag!
+            </div>
 
-    <div class="food-banner">
-        ${todayInfo.meal}
-    </div>
-    `;
+            <div class="food-banner">
+                ${todayInfo.meal}
+            </div>
+        `;
 
         target.appendChild(todayBanner);
     }
