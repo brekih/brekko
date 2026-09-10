@@ -70,6 +70,27 @@ body{
     font-size:32px;
     padding:20px;
 }
+.today-banner{
+    margin-top:20px;
+    background:#a32018;
+    color:#f6c283;
+    font-size:48px;
+    text-align:center;
+    padding:20px;
+    border-radius:20px;
+    font-weight:300;
+}
+
+.food-banner{
+    margin-top:12px;
+    background:#f6c283;
+    color:#a32018;
+    font-size:56px;
+    text-align:center;
+    padding:20px;
+    border-radius:20px;
+    font-weight:700;
+}
 </style>
 </head>
 
@@ -125,10 +146,44 @@ function currentMenu() {
     );
 }
 
+function getTodayInfo() {
+
+    const today = new Date();
+
+    const weekday = today.getDay();
+
+    const dayNames = [
+        "Sunnudagur",
+        "Mánudagur",
+        "Þriðjudagur",
+        "Miðvikudagur",
+        "Fimmtudagur",
+        "Föstudagur",
+        "Laugardagur"
+    ];
+
+    const week = currentMenu();
+
+    if (!week) {
+        return null;
+    }
+
+    const mealIndex = weekday - 1;
+
+    return {
+        dayName: dayNames[weekday],
+        meal:
+            mealIndex >= 0 && mealIndex < 5
+                ? week.meals[mealIndex]
+                : "Enginn skólamatur í dag"
+    };
+}
+
 function renderCurrentWeek() {
 
     const week = currentMenu();
     const target = document.getElementById("menuContainer");
+    const todayInfo = getTodayInfo();
 
     target.innerHTML = "";
 
@@ -175,7 +230,24 @@ function renderCurrentWeek() {
 
         target.appendChild(card);
 
-    });
+    })
+    if (todayInfo) {
+
+    const todayBanner =
+        document.createElement("div");
+
+    todayBanner.innerHTML = `
+        <div class="today-banner">
+            Það er ${todayInfo.dayName} í dag!
+        </div>
+
+        <div class="food-banner">
+            ${todayInfo.meal}
+        </div>
+    `;
+
+    target.appendChild(todayBanner);
+};
 }
 
 loadMenus();
