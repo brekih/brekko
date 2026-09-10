@@ -91,6 +91,11 @@ body{
     border-radius:20px;
     font-weight:700;
 }
+.today-wrapper{
+    grid-column:1 / -1;
+    width:100%;
+}
+
 </style>
 </head>
 
@@ -229,16 +234,17 @@ function renderCurrentWeek() {
     if (todayInfo) {
 
         const todayBanner = document.createElement("div");
+        todayBanner.className = "today-wrapper";
 
         todayBanner.innerHTML = `
-            <div class="today-banner">
-                Það er ${todayInfo.dayName} í dag!
-            </div>
+    <div class="today-banner">
+        Það er ${todayInfo.dayName} í dag!
+    </div>
 
-            <div class="food-banner">
-                ${todayInfo.meal}
-            </div>
-        `;
+    <div class="food-banner">
+        ${todayInfo.meal}
+    </div>
+    `;
 
         target.appendChild(todayBanner);
     }
