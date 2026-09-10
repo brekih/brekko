@@ -221,33 +221,27 @@ function renderCurrentWeek() {
 
             <div class="menu-image">
                 <img
-                src="${imagePath}"
-                alt="${meal || "Matur"}"
-                >
-                
+                    src="${imagePath}"
+                    altild(card);
+
+    });
+
+    if (todayInfo) {
+
+        const todayBanner = document.createElement("div");
+
+        todayBanner.innerHTML = `
+            <div class="today-banner">
+                Það er ${todayInfo.dayName} í dag!
+            </div>
+
+            <div class="food-banner">
+                ${todayInfo.meal}
             </div>
         `;
 
-        target.appendChild(card);
-
-    })
-    if (todayInfo) {
-
-    const todayBanner =
-        document.createElement("div");
-
-    todayBanner.innerHTML = `
-        <div class="today-banner">
-            Það er ${todayInfo.dayName} í dag!
-        </div>
-
-        <div class="food-banner">
-            ${todayInfo.meal}
-        </div>
-    `;
-
-    target.appendChild(todayBanner);
-};
+        target.appendChild(todayBanner);
+    }
 }
 
 loadMenus();
