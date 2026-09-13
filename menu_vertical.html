@@ -144,19 +144,35 @@ function todayKey() {
 
 function currentMenu() {
 
-    const today = todayKey();
+    const d = new Date();
+
+    if (d.getDay() === 6 || d.getDay() === 0) {
+        return menus[2]; // næsta vika í JSON
+    }
+
+    const today =
+        d.getFullYear() + "-" +
+        String(d.getMonth() + 1).padStart(2, "0") + "-" +
+        String(d.getDate()).padStart(2, "0");
 
     return menus.find(menu =>
         today >= menu.start &&
         today <= menu.end
     );
 }
-
 function getTodayInfo() {
 
     const today = new Date();
 
-    const weekday = today.getDay();
+    let weekday = today.getDay();
+
+    if (weekday === 0) {
+        weekday = 1; // sunnudagur -> mánudagur
+        }
+         
+    if (weekday === 6) {
+        weekday = 1; // laugardagur -> mánudagur
+        }
 
     const dayNames = [
         "Sunnudagur",
@@ -178,10 +194,7 @@ function getTodayInfo() {
 
     return {
         dayName: dayNames[weekday],
-        meal:
-            mealIndex >= 0 && mealIndex < 5
-                ? week.meals[mealIndex]
-                : "Enginn skólamatur í dag"
+        meal: week.meals[mealIndex]
     };
 }
 
