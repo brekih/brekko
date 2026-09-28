@@ -83,15 +83,16 @@
       "Mexíkófiskur og hrísgrjón",
       "Lasagne",
       "Nætursöltuð ýsa, kartöflur, rúgbrauð og laukfeiti",
-      "",
-      ""
+      "VIÐTALSDAGUR - FRÍ",
+      "Grænmetisbuff, hrísgrjón og sósa"
     ],
     "images": [
-      "placeholder.png",
-      "placeholder.png",
-      "placeholder.png",
-      "placeholder.png",
-      "placeholder.png"
+      "mexikofiskur.png",
+      "lasagne.png",
+      "naetursoltud_ysa.png",
+      "vidtalsdagar.png",
+      "graenmetisbuff.png"
+
     ]
   }
 ]
