@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brekkó klukka</title>
+  <style>
+    :root {
+      --red: #8c2d20;
+      --green: #365b50;
+      --dark: #321d18;
+      --tick: #9b7869;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #FFFFFF;
+      color: var(--dark);
+    }
+
+    .widget {
+      width: 100vw;
+      height: 100vh;
+      min-height: 330px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .panel {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+      padding: clamp(12px, 2vw, 24px);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 10px 30px rgba(78, 45, 30, 0.14);
+    }
+
+    .today {
+      color: var(--red);
+      font-size: clamp(22px, 4.3vw, 52px);
+      font-weight: 800;
+      line-height: 1.05;
+      text-align: center;
+    }
+
+    .date {
+      margin-top: 6px;
+      color: var(--green);
+      font-size: clamp(15px, 2.4vw, 30px);
+      font-weight: 650;
+      text-align: center;
+    }
+
+    .clock {
+      position: relative;
+      flex: 0 1 auto;
+      width: min(70vw, 55vh, 430px);
+      aspect-ratio: 1;
+      margin: clamp(10px, 2vh, 22px) 0;
+      overflow: hidden;
+      border: clamp(8px, 1.2vw, 14px) solid var(--red);
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 43%, #ffffff 0 62%, #f4e9dd 100%);
+      box-shadow: inset 0 0 18px rgba(80, 35, 20, 0.15), 0 7px 19px rgba(80, 35, 20, 0.14);
+    }
+
+    #ticks, #numbers {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+    }
+
+    .tick {
+      position: absolute;
+      left: 50%;
+      top: 2%;
+      width: 2px;
+      height: 4.2%;
+      margin-left: -1px;
+      border-radius: 3px;
+      background: var(--tick);
+      transform-origin: 50% 1142%;
+      z-index: 1;
+    }
+
+    .tick.major {
+      top: 1.5%;
+      width: 4px;
+      height: 6.2%;
+      margin-left: -2px;
+      background: var(--red);
+      transform-origin: 50% 782%;
+    }
+
+    .number {
+      position: absolute;
+      z-index: 2;
+      width: 14%;
+      height: 14%;
+      display: grid;
+      place-items: center;
+      color: #562018;
+      font-size: clamp(17px, 3.2vw, 34px);
+      font-weight: 850;
+      line-height: 1;
+      transform: translate(-50%, -50%);
+    }
+
+    
+
+    .hand {
+      position: absolute;
+      left: 50%;
+      bottom: 50%;
+      z-index: 4;
+      border-radius: 99px;
+      transform: translateX(-50%) rotate(0deg);
+      transform-origin: 50% 100%;
+    }
+
+    .hour-hand {
+      width: clamp(6px, 1.4%, 9px);
+      height: 25%;
+      background: var(--dark);
+    }
+
+  
+
+    .minute-hand {
+      width: clamp(4px, 1%, 6px);
+      height: 34%;
+      background: #4a4a4a;
+    }
+
+    .second-hand {
+      width: 2px;
+      height: 39%;
+      background: #d9362b;
+    }
+
+    .centre-pin {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 5;
+      width: 6%;
+      aspect-ratio: 1;
+      border: 3px solid white;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 0 2px var(--red);
+      transform: translate(-50%, -50%);
+    }
+
+    .digital {
+      color: var(--red);
+      font-size: clamp(30px, 5vw, 62px);
+      font-weight: 850;
+      line-height: 1;
+      letter-spacing: 0.06em;
+    }
+
+    .panel.break-panel .clock {
+      width: min(60vw, 43vh, 340px);
+      margin: 8px 0;
+    }
+
+    .break-alert {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      padding-top: 8px;
+    }
+
+    .break-alert-content {
+      display: grid;
+      justify-items: center;
+      gap: 6px;
+      width: min(100%, 520px);
+      min-height: 208px;
+      padding: 14px 16px;
+      border: 2px solid var(--red);
+      border-radius: 12px;
+      background: #fffdf8;
+    }
+
+    .break-alert-details[hidden],
+    .learning-message[hidden] { display: none; }
+
+    .break-alert-details {
+      display: grid;
+      justify-items: center;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .learning-message {
+      position: relative;
+      display: block;
+      align-self: stretch;
+      width: calc(100% + 24px);
+      min-height: 200px;
+      margin: -12px;
+      overflow: hidden;
+    }
+
+    .learning-bouncer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: var(--red);
+      font-size: clamp(28px, 4vw, 38px);
+      font-weight: 900;
+      line-height: 1;
+      white-space: nowrap;
+      user-select: none;
+      will-change: transform;
+    }
+
+    .break-alert-title {
+      margin: 0;
+      color: var(--red);
+      font-size: clamp(18px, 3vw, 26px);
+      font-weight: 850;
+    }
+
+    .break-alert-end {
+      margin: 0;
+      color: var(--dark);
+      font-size: clamp(14px, 2vw, 19px);
+      font-weight: 650;
+    }
+
+    .break-countdown {
+      position: relative;
+      display: grid;
+      width: 104px;
+      aspect-ratio: 1;
+      place-items: center;
+    }
+
+    .break-progress-ring {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .break-progress-track,
+    .break-progress-value {
+      fill: none;
+      stroke-width: 9;
+    }
+
+    .break-progress-track { stroke: #ead9ca; }
+
+    .break-progress-value {
+      stroke: var(--green);
+      stroke-linecap: round;
+      stroke-dasharray: 276.46;
+      transition: stroke-dashoffset 0.8s linear;
+    }
+
+    .break-alert.is-complete .break-progress-track,
+    .break-alert.is-complete .break-progress-value {
+      stroke: var(--red);
+    }
+
+    .break-countdown-text {
+      display: grid;
+      justify-items: center;
+      position: relative;
+      z-index: 1;
+      color: var(--dark);
+      line-height: 1.1;
+      text-align: center;
+    }
+
+    .break-countdown-text strong {
+      color: var(--green);
+      font-size: 28px;
+    }
+
+    .break-countdown-text span { font-size: 11px; }
+
+    @media (max-height: 520px) and (min-aspect-ratio: 5/4) {
+      .panel {
+        display: grid;
+        grid-template-columns: 42% 58%;
+        grid-template-rows: auto auto auto auto;
+        column-gap: 18px;
+      }
+      .today, .date, .digital, .break-alert { grid-column: 1; }
+      .today { align-self: end; }
+      .date { align-self: center; }
+      .digital { align-self: start; text-align: center; }
+      .clock {
+        grid-column: 2;
+        grid-row: 1 / 5;
+        width: min(46vw, 88vh, 430px);
+        margin: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="widget">
+    <section class="panel break-panel">
+      <div class="today" id="todayText"></div>
+      <div class="date" id="dateText"></div>
+
+      <div class="clock" aria-label="Hliðræn klukka">
+        <div id="ticks" aria-hidden="true"></div>
+        <div id="numbers" aria-hidden="true"></div>
+        <div class="hand hour-hand" id="hourHand"></div>
+        <div class="hand minute-hand" id="minuteHand"></div>
+        <div class="hand second-hand" id="secondHand"></div>
+        <div class="centre-pin"></div>
+      </div>
+
+      <div class="digital" id="digitalClock"></div>
+
+      <aside class="break-alert" id="breakAlert" role="status" aria-live="polite">
+        <div class="break-alert-content">
+          <div class="learning-message" id="learningMessage" role="img" aria-label="Læra">
+            <span class="learning-bouncer" id="learningBouncer" aria-hidden="true">Læra</span>
+          </div>
+          <div class="break-alert-details" id="breakAlertDetails" hidden>
+            <h1 class="break-alert-title" id="breakAlertTitle"></h1>
+            <p class="break-alert-end" id="breakAlertEnd"></p>
+            <div class="break-countdown" role="img" aria-label="Tími þar til frímínútum lýkur">
+              <svg class="break-progress-ring" viewBox="0 0 100 100" aria-hidden="true">
+                <circle class="break-progress-track" cx="50" cy="50" r="44"></circle>
+                <circle class="break-progress-value" id="breakProgress" cx="50" cy="50" r="44"></circle>
+              </svg>
+              <div class="break-countdown-text">
+                <strong id="breakMinutes">60</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const DAYS = [
+      "sunnudagur", "mánudagur", "þriðjudagur", "miðvikudagur",
+      "fimmtudagur", "föstudagur", "laugardagur"
+    ];
+
+    const MONTHS = [
+      "janúar", "febrúar", "mars", "apríl", "maí", "júní",
+      "júlí", "ágúst", "september", "október", "nóvember", "desember"
+    ];
+    const BREAKS = [
+      { startHour: 9, endHour: 10, title: "Frímínútur", endTime: "10:50" },
+      { startHour: 11, endHour: 12, title: "Frímínútur", endTime: "12:50" }
+    ];
+    const BREAK_DURATION_MS = 60 * 60 * 1000;
+    const BREAK_COMPLETE_DURATION_MS = 10 * 60 * 1000;
+    const BREAK_PROGRESS_CIRCUMFERENCE = 2 * Math.PI * 44;
+    const BREAK_SOUND_PATH = "./sound.mp3";
+    const LEARNING_COLORS = [
+      "#ff1744", "#ff6d00", "#ffd600", "#76ff03", "#00e676",
+      "#1de9b6", "#00e5ff", "#2979ff", "#3d5afe", "#651fff",
+      "#d500f9", "#f50057", "#ff4081", "#00b0ff", "#c6ff00"
+    ];
+    const playedBreakAlerts = new Set();
+    let learningAnimationFrame = 0;
+    let learningLastFrame = 0;
+    let learningX = 10;
+    let learningY = 10;
+    let learningVelocityX = 40;
+    let learningVelocityY = 20;
+    let learningColorIndex = 0;
+    const DEBUG_MODE = false;
+    const DEBUG_NOW = "2026-09-29T10:55:00";
+    const DEBUG_TIME_SPEED = 60;
+    const debugStartTime = new Date(DEBUG_NOW);
+    const debugStartedAt = Date.now();
+
+    function getIcelandNow() {
+      if (DEBUG_MODE && Number.isFinite(debugStartTime.getTime())) {
+        return new Date(
+          debugStartTime.getTime() +
+          (Date.now() - debugStartedAt) * DEBUG_TIME_SPEED
+        );
+      }
+
+      const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Atlantic/Reykjavik",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hourCycle: "h23"
+      }).formatToParts(new Date());
+
+      const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+      return new Date(
+        `${values.year}-${values.month}-${values.day}` +
+        `T${values.hour}:${values.minute}:${values.second}`
+      );
+    }
+
+    function buildClock() {
+      const ticks = document.getElementById("ticks");
+      const numbers = document.getElementById("numbers");
+
+      ticks.replaceChildren();
+      numbers.replaceChildren();
+
+      for (let minute = 0; minute < 60; minute++) {
+        const tick = document.createElement("div");
+        tick.className = minute % 5 === 0 ? "tick major" : "tick";
+        tick.style.transform = `rotate(${minute * 6}deg)`;
+        ticks.appendChild(tick);
+      }
+
+      for (let number = 1; number <= 12; number++) {
+        const item = document.createElement("div");
+        item.className = "number";
+
+        const angle = (number * 30 - 90) * Math.PI / 180;
+        const radius = 38;
+
+        item.style.left = `${50 + radius * Math.cos(angle)}%`;
+        item.style.top = `${50 + radius * Math.sin(angle)}%`;
+        item.textContent = number;
+        numbers.appendChild(item);
+      }
+    }
+
+    function playBreakSound(timesLeft = 3) {
+      const audio = new Audio(BREAK_SOUND_PATH);
+      audio.addEventListener("ended", () => {
+        if (timesLeft > 1) {
+          window.setTimeout(() => playBreakSound(timesLeft - 1), 250);
+        }
+      }, { once: true });
+      audio.addEventListener("error", () => {
+        console.warn(`Could not load break alert sound: ${BREAK_SOUND_PATH}`);
+      }, { once: true });
+      audio.play().catch(error => {
+        console.warn("Break alert sound could not play:", error);
+      });
+    }
+
+    function animateLearning(timestamp) {
+      const container = document.getElementById("learningMessage");
+      const logo = document.getElementById("learningBouncer");
+
+      if (container.hidden) {
+        learningAnimationFrame = 0;
+        learningLastFrame = 0;
+        return;
+      }
+
+      if (!learningLastFrame) learningLastFrame = timestamp;
+      const elapsed = Math.min((timestamp - learningLastFrame) / 1000, 0.04);
+      learningLastFrame = timestamp;
+
+      const maxX = Math.max(0, container.clientWidth - logo.offsetWidth);
+      const maxY = Math.max(0, container.clientHeight - logo.offsetHeight);
+      learningX = Math.min(learningX, maxX);
+      learningY = Math.min(learningY, maxY);
+      learningX += learningVelocityX * elapsed;
+      learningY += learningVelocityY * elapsed;
+
+      let bounced = false;
+      if (learningX <= 0 || learningX >= maxX) {
+        learningX = Math.max(0, Math.min(maxX, learningX));
+        learningVelocityX *= -1;
+        bounced = true;
+      }
+      if (learningY <= 0 || learningY >= maxY) {
+        learningY = Math.max(0, Math.min(maxY, learningY));
+        learningVelocityY *= -1;
+        bounced = true;
+      }
+
+      if (bounced) {
+        learningColorIndex = (learningColorIndex + 1) % LEARNING_COLORS.length;
+        logo.style.color = LEARNING_COLORS[learningColorIndex];
+      }
+
+      logo.style.transform = `translate3d(${learningX}px, ${learningY}px, 0)`;
+      learningAnimationFrame = requestAnimationFrame(animateLearning);
+    }
+
+    function setLearningAnimation(isVisible) {
+      if (isVisible && !learningAnimationFrame) {
+        learningLastFrame = 0;
+        learningAnimationFrame = requestAnimationFrame(animateLearning);
+      } else if (!isVisible && learningAnimationFrame) {
+        cancelAnimationFrame(learningAnimationFrame);
+        learningAnimationFrame = 0;
+        learningLastFrame = 0;
+      }
+    }
+
+    function updateBreakAlert(now) {
+      const dateKey = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
+      const alert = document.getElementById("breakAlert");
+      const learningMessage = document.getElementById("learningMessage");
+      const breakAlertDetails = document.getElementById("breakAlertDetails");
+      const nowMs = now.getTime();
+      const activeBreak = BREAKS.find(breakTime => {
+        const start = new Date(now);
+        start.setHours(breakTime.startHour, 50, 0, 0);
+        const end = new Date(now);
+        end.setHours(breakTime.endHour, 50, 0, 0);
+        return nowMs >= start.getTime() &&
+          nowMs < end.getTime() + BREAK_COMPLETE_DURATION_MS;
+      });
+
+      if (!activeBreak) {
+        learningMessage.hidden = false;
+        breakAlertDetails.hidden = true;
+        alert.classList.remove("is-complete");
+        setLearningAnimation(true);
+        return;
+      }
+
+      const alertKey = `${dateKey}-${activeBreak.startHour}`;
+      const end = new Date(now);
+      end.setHours(activeBreak.endHour, 50, 0, 0);
+      const isCompleted = nowMs >= end.getTime();
+      const remainingMs = isCompleted ? 0 : end.getTime() - nowMs;
+      const remainingMinutes = isCompleted ? 0 : Math.ceil(remainingMs / 60000);
+      const progressOffset = isCompleted
+        ? 0
+        : BREAK_PROGRESS_CIRCUMFERENCE *
+          (1 - remainingMs / BREAK_DURATION_MS);
+
+      document.getElementById("breakAlertTitle").textContent = isCompleted
+        ? "Frímínútur búnar !"
+        : activeBreak.title;
+      document.getElementById("breakAlertEnd").textContent =
+        isCompleted
+          ? `Frímínútum lauk kl. ${activeBreak.endTime}`
+          : `Frímínútur enda kl. ${activeBreak.endTime}`;
+      document.getElementById("breakMinutes").textContent = remainingMinutes;
+      document.getElementById("breakProgress").style.strokeDashoffset = progressOffset;
+      alert.classList.toggle("is-complete", isCompleted);
+      learningMessage.hidden = true;
+      breakAlertDetails.hidden = false;
+      setLearningAnimation(false);
+      document.querySelector(".break-countdown").setAttribute(
+        "aria-label",
+        isCompleted ? "Frímínútur búnar" : "Mínútur þar til frímínútum lýkur"
+      );
+
+      if (!isCompleted && !playedBreakAlerts.has(alertKey)) {
+        playedBreakAlerts.add(alertKey);
+        playBreakSound();
+      }
+    }
+
+    function updateClock() {
+      const now = getIcelandNow();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+
+      document.getElementById("todayText").textContent =
+        `Í dag er ${DAYS[now.getDay()]}!`;
+
+      document.getElementById("dateText").textContent =
+        `${now.getDate()}. ${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+
+      document.getElementById("digitalClock").textContent =
+        `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+
+      updateBreakAlert(now);
+
+      const secondDegrees = seconds * 6;
+      const minuteDegrees = minutes * 6 + seconds * 0.1;
+      const hourDegrees = (hours % 12) * 30 + minutes * 0.5 + seconds / 120;
+
+      document.getElementById("secondHand").style.transform =
+        `translateX(-50%) rotate(${secondDegrees}deg)`;
+      document.getElementById("minuteHand").style.transform =
+        `translateX(-50%) rotate(${minuteDegrees}deg)`;
+      document.getElementById("hourHand").style.transform =
+        `translateX(-50%) rotate(${hourDegrees}deg)`;
+    }
+
+    buildClock();
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+</body>
+</html>
