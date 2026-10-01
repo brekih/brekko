@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Brekkó klukka</title>
+  <link rel="icon" href="./favicon.ico" sizes="any">
   <style>
     :root {
       --red: #8c2d20;
@@ -369,11 +370,11 @@
     const BREAK_DURATION_MS = 60 * 60 * 1000;
     const BREAK_COMPLETE_DURATION_MS = 10 * 60 * 1000;
     const BREAK_PROGRESS_CIRCUMFERENCE = 2 * Math.PI * 44;
-    const BREAK_SOUND_PATH = "./sound.mp3";
+    const SCHOOL_BELL_PATH = "./data/skolabjalla.mp3";
     const LEARNING_HUES = [
       0, 25, 45, 80, 120, 155, 180, 210, 230, 260, 290, 330, 345, 195, 70
     ];
-    const playedBreakAlerts = new Set();
+      const playedBreakCompletions = new Set();
     let learningAnimationFrame = 0;
     let learningLastFrame = 0;
     let learningX = 10;
@@ -384,7 +385,7 @@
     let previewNow = null;
     let previewPlayback = null;
     const DEBUG_MODE = false;
-    const DEBUG_NOW = "2026-09-29T10:55:00";
+    const DEBUG_NOW = "2026-09-29T10:45:00";
     const DEBUG_TIME_SPEED = 60;
     const debugStartTime = new Date(DEBUG_NOW);
     const debugStartedAt = Date.now();
@@ -452,18 +453,13 @@
       }
     }
 
-    function playBreakSound(timesLeft = 3) {
-      const audio = new Audio(BREAK_SOUND_PATH);
-      audio.addEventListener("ended", () => {
-        if (timesLeft > 1) {
-          window.setTimeout(() => playBreakSound(timesLeft - 1), 250);
-        }
-      }, { once: true });
+    function playSchoolBell() {
+      const audio = new Audio(SCHOOL_BELL_PATH);
       audio.addEventListener("error", () => {
-        console.warn(`Could not load break alert sound: ${BREAK_SOUND_PATH}`);
+        console.warn(`Could not load break completion sound: ${SCHOOL_BELL_PATH}`);
       }, { once: true });
       audio.play().catch(error => {
-        console.warn("Break alert sound could not play:", error);
+        console.warn("Break completion sound could not play:", error);
       });
     }
 
@@ -572,9 +568,10 @@
         isCompleted ? "Frímínútur búnar" : "Mínútur þar til frímínútum lýkur"
       );
 
-      if (playSound && !isCompleted && !playedBreakAlerts.has(alertKey)) {
-        playedBreakAlerts.add(alertKey);
-        playBreakSound();
+
+      if (playSound && isCompleted && !playedBreakCompletions.has(alertKey)) {
+        playedBreakCompletions.add(alertKey);
+        playSchoolBell();
       }
     }
 
