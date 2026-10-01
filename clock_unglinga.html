@@ -364,10 +364,9 @@
       "júlí", "ágúst", "september", "október", "nóvember", "desember"
     ];
     const BREAKS = [
-      { startHour: 9, endHour: 10, title: "Frímínútur", endTime: "10:50" },
-      { startHour: 11, endHour: 12, title: "Frímínútur", endTime: "12:50" }
+      { startHour: 10, startMinute: 10, endHour: 10, endMinute: 40, title: "Frímínútur", endTime: "10:40" },
+      { startHour: 12, startMinute: 15, endHour: 12, endMinute: 50, title: "Frímínútur", endTime: "12:50" }
     ];
-    const BREAK_DURATION_MS = 60 * 60 * 1000;
     const BREAK_COMPLETE_DURATION_MS = 10 * 60 * 1000;
     const BREAK_PROGRESS_CIRCUMFERENCE = 2 * Math.PI * 44;
     const SCHOOL_BELL_PATH = "./data/skolabjalla.mp3";
@@ -385,8 +384,8 @@
     let learningColorIndex = 0;
     let previewNow = null;
     let previewPlayback = null;
-    const DEBUG_MODE = false;
-    const DEBUG_NOW = "2026-09-29T10:45:00";
+    const DEBUG_MODE = true;
+    const DEBUG_NOW = "2026-09-29T10:09:00";
     const DEBUG_TIME_SPEED = 60;
     const debugStartTime = new Date(DEBUG_NOW);
     const debugStartedAt = Date.now();
@@ -525,9 +524,9 @@
       const nowMs = now.getTime();
       const activeBreak = BREAKS.find(breakTime => {
         const start = new Date(now);
-        start.setHours(breakTime.startHour, 50, 0, 0);
+        start.setHours(breakTime.startHour, breakTime.startMinute, 0, 0);
         const end = new Date(now);
-        end.setHours(breakTime.endHour, 50, 0, 0);
+        end.setHours(breakTime.endHour, breakTime.endMinute, 0, 0);
         return nowMs >= start.getTime() &&
           nowMs < end.getTime() + BREAK_COMPLETE_DURATION_MS;
       });
@@ -540,16 +539,19 @@
         return;
       }
 
-      const alertKey = `${dateKey}-${activeBreak.startHour}`;
+      const alertKey = `${dateKey}-${activeBreak.startHour}-${activeBreak.startMinute}`;
+      const start = new Date(now);
+      start.setHours(activeBreak.startHour, activeBreak.startMinute, 0, 0);
       const end = new Date(now);
-      end.setHours(activeBreak.endHour, 50, 0, 0);
+      end.setHours(activeBreak.endHour, activeBreak.endMinute, 0, 0);
       const isCompleted = nowMs >= end.getTime();
       const remainingMs = isCompleted ? 0 : end.getTime() - nowMs;
       const remainingMinutes = isCompleted ? 0 : Math.ceil(remainingMs / 60000);
+      const breakDurationMs = end.getTime() - start.getTime();
       const progressOffset = isCompleted
         ? 0
         : -BREAK_PROGRESS_CIRCUMFERENCE *
-          (1 - remainingMs / BREAK_DURATION_MS);
+          (1 - remainingMs / breakDurationMs);
 
       document.getElementById("breakAlertTitle").textContent = isCompleted
         ? "Frímínútur búnar !"
@@ -617,9 +619,9 @@
         if (mode === "learning") {
           preview.setHours(8, 30, 0, 0);
         } else if (mode === "break") {
-          preview.setHours(breakTime.startHour, 50, 0, 0);
+          preview.setHours(breakTime.startHour, breakTime.startMinute, 0, 0);
         } else if (mode === "complete") {
-          preview.setHours(breakTime.endHour, 50, 0, 0);
+          preview.setHours(breakTime.endHour, breakTime.endMinute, 0, 0);
         } else {
           throw new RangeError('Mode must be "learning", "break", or "complete".');
         }
