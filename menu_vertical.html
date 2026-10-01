@@ -106,6 +106,7 @@ body{
 
 <script>
 
+const DATE_OVERRIDE = "";
 let menus = [];
 
 async function loadMenus() {
@@ -133,18 +134,30 @@ async function loadMenus() {
     }
 }
 
-function todayKey() {
+function effectiveDate() {
+    if (!DATE_OVERRIDE.trim()) {
+        return new Date();
+    }
 
-    const d = new Date();
+    const match = /^(\d{2})\.(\d{2})\.(\d{2})$/.exec(DATE_OVERRIDE.trim());
+    if (match) {
+        const [, day, month, year] = match;
+        const date = new Date(2000 + Number(year), Number(month) - 1, Number(day));
 
-    return d.getFullYear() + "-" +
-        String(d.getMonth()+1).padStart(2,"0") + "-" +
-        String(d.getDate()).padStart(2,"0");
+        if (date.getFullYear() === 2000 + Number(year) &&
+            date.getMonth() === Number(month) - 1 &&
+            date.getDate() === Number(day)) {
+            return date;
+        }
+    }
+
+    console.warn("DATE_OVERRIDE must be a valid date in DD.MM.YY format; using today's date.");
+    return new Date();
 }
 
 function currentMenu() {
 
-    const d = new Date();
+    const d = effectiveDate();
 
     if (d.getDay() === 6 || d.getDay() === 0) {
         return menus[2]; // næsta vika í JSON
@@ -162,7 +175,7 @@ function currentMenu() {
 }
 function getTodayInfo() {
 
-    const today = new Date();
+    const today = effectiveDate();
 
     let weekday = today.getDay();
 
@@ -241,6 +254,8 @@ function renderCurrentWeek() {
             <div class="menu-image">
                 <img
                     src="${imagePath}"
+                    alt="Mynd fyrir ${dayNames[index]}"
+                    onerror="this.onerror=null; this.src='./menu_pictures/placeholder.png';"
                     >
             </div>
             `;

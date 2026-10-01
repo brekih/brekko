@@ -386,6 +386,8 @@
     let learningVelocityX = 40;
     let learningVelocityY = 20;
     let learningColorIndex = 0;
+    let previewNow = null;
+    let previewPlayback = null;
     const DEBUG_MODE = false;
     const DEBUG_NOW = "2026-09-29T10:55:00";
     const DEBUG_TIME_SPEED = 60;
@@ -393,6 +395,15 @@
     const debugStartedAt = Date.now();
 
     function getIcelandNow() {
+      if (previewPlayback) {
+        return new Date(
+          previewPlayback.startTime.getTime() +
+          (Date.now() - previewPlayback.startedAt) * previewPlayback.speed
+        );
+      }
+
+      if (previewNow) return new Date(previewNow);
+
       if (DEBUG_MODE && Number.isFinite(debugStartTime.getTime())) {
         return new Date(
           debugStartTime.getTime() +
@@ -514,7 +525,7 @@
       }
     }
 
-    function updateBreakAlert(now) {
+    function updateBreakAlert(now, playSound = true) {
       const dateKey = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
       const alert = document.getElementById("breakAlert");
       const learningMessage = document.getElementById("learningMessage");
@@ -545,7 +556,7 @@
       const remainingMinutes = isCompleted ? 0 : Math.ceil(remainingMs / 60000);
       const progressOffset = isCompleted
         ? 0
-        : BREAK_PROGRESS_CIRCUMFERENCE *
+        : -BREAK_PROGRESS_CIRCUMFERENCE *
           (1 - remainingMs / BREAK_DURATION_MS);
 
       document.getElementById("breakAlertTitle").textContent = isCompleted
@@ -566,7 +577,7 @@
         isCompleted ? "Frímínútur búnar" : "Mínútur þar til frímínútum lýkur"
       );
 
-      if (!isCompleted && !playedBreakAlerts.has(alertKey)) {
+      if (playSound && !isCompleted && !playedBreakAlerts.has(alertKey)) {
         playedBreakAlerts.add(alertKey);
         playBreakSound();
       }
@@ -587,7 +598,7 @@
       document.getElementById("digitalClock").textContent =
         `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 
-      updateBreakAlert(now);
+      updateBreakAlert(now, !previewNow && !previewPlayback);
 
       const secondDegrees = seconds * 6;
       const minuteDegrees = minutes * 6 + seconds * 0.1;
@@ -600,6 +611,48 @@
       document.getElementById("hourHand").style.transform =
         `translateX(-50%) rotate(${hourDegrees}deg)`;
     }
+
+    window.clockPreview = {
+      show(mode, recess = 1) {
+        if (![1, 2].includes(recess)) {
+          throw new RangeError("Recess must be 1 or 2.");
+        }
+
+        const breakTime = BREAKS[recess - 1];
+        const preview = getIcelandNow();
+
+        if (mode === "learning") {
+          preview.setHours(8, 30, 0, 0);
+        } else if (mode === "break") {
+          preview.setHours(breakTime.startHour, 50, 0, 0);
+        } else if (mode === "complete") {
+          preview.setHours(breakTime.endHour, 50, 0, 0);
+        } else {
+          throw new RangeError('Mode must be "learning", "break", or "complete".');
+        }
+
+        if (mode === "break") {
+          previewNow = null;
+          previewPlayback = {
+            startTime: preview,
+            startedAt: Date.now(),
+            speed: 60
+          };
+        } else {
+          previewNow = preview;
+          previewPlayback = null;
+        }
+        updateClock();
+        const behavior = mode === "break" ? " It advances one simulated minute per real second." : "";
+        return `Previewing ${mode}${mode === "learning" ? "" : ` recess ${recess}`}.${behavior} Call clockPreview.live() to return to live time.`;
+      },
+      live() {
+        previewNow = null;
+        previewPlayback = null;
+        updateClock();
+        return "Returned to live clock.";
+      }
+    };
 
     buildClock();
     updateClock();

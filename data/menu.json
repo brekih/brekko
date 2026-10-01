@@ -94,5 +94,81 @@
       "graenmetisbuff.png"
 
     ]
+  },
+   {
+    "start": "2026-10-05",
+    "end": "2026-10-09",
+    "label": "5. - 9. október",
+    "meals": [
+      "Plokkfiskur og rúgbrauð",
+      "VAL NEMENDA",
+      "Nætursöltuð ýsa, kartöflur, rúgbrauð og laukfeiti",
+      "Bláberjaskyr og smurt brauð",
+      "Kjúklingapasta"
+    ],
+    "images": [
+      "plokkfiskur.png",
+      "val_nemenda.png",
+      "naetursoltud_ysa.png",
+      "blaberjaskyr.png",
+      "kjuklingapasta.png"
+    ]
+  },
+  {
+    "start": "2026-10-12",
+    "end": "2026-10-16",
+    "label": "12. - 16. október",
+    "meals": [
+      "Lax, kryddkartöflur og köld sósa",
+      "Lambasnitsel, kartöflumús, brún sósa og sulta",
+      "Soðin ýsa, kartöflur, rúgbrauð og laukfeiti",
+      "Sveppasúpa og brauðbollur",
+      "Kjúklingabollur, hrísgrjón og sósa"
+    ],
+    "images": [
+      "placeholder.png",
+      "placeholder.png",
+      "placeholder.png",
+      "placeholder.png",
+      "placeholder.png"
+    ]
+  },
+  {
+    "start": "2026-10-19",
+    "end": "2026-10-23",
+    "label": "19. - 23. október",
+    "meals": [
+      "VETRARFRÍ",
+      "VETRARFRÍ",
+      "Steiktur fiskur, kartöflur og köld sósa",
+      "Tómatsúpa með pasta og hvítlauksbrauð",
+      "Kjúklingalasagne"
+    ],
+    "images": [
+      "placeholder.png",
+      "placeholder.png",
+      "placeholder.png",
+      "placeholder.png",
+      "placeholder.png"
+    ]
+  },
+  {
+    "start": "2026-10-26",
+    "end": "2026-10-30",
+    "label": "26. - 30. október",
+    "meals": [
+      "Mexíkófiskur og hrísgrjón",
+      "Kjötsúpa",
+      "Soðin ýsa, kartöflur, rúgbrauð og laukfeiti",
+      "VAL NEMENDA",
+      "Kjúklingur í BBQ og hrísgrjón"
+    ],
+    "images": [
+      "placeholder.png",
+      "placeholder.png",
+      "placeholder.png",
+      "placeholder.png",
+      "placeholder.png"
+    ]
   }
 ]
