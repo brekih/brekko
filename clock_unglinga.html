@@ -219,13 +219,10 @@
       position: absolute;
       top: 0;
       left: 0;
-      color: var(--red);
-      font-size: clamp(28px, 4vw, 38px);
-      font-weight: 900;
-      line-height: 1;
-      white-space: nowrap;
+      width: clamp(50px, 14vw, 90px);
+      height: auto;
       user-select: none;
-      will-change: transform;
+      will-change: transform, filter;
     }
 
     .break-alert-title {
@@ -335,7 +332,7 @@
       <aside class="break-alert" id="breakAlert" role="status" aria-live="polite">
         <div class="break-alert-content">
           <div class="learning-message" id="learningMessage" role="img" aria-label="Læra">
-            <span class="learning-bouncer" id="learningBouncer" aria-hidden="true">Læra</span>
+            <img class="learning-bouncer" id="learningBouncer" src="./data/brekko-logo.png" alt="" aria-hidden="true">
           </div>
           <div class="break-alert-details" id="breakAlertDetails" hidden>
             <h1 class="break-alert-title" id="breakAlertTitle"></h1>
@@ -373,10 +370,8 @@
     const BREAK_COMPLETE_DURATION_MS = 10 * 60 * 1000;
     const BREAK_PROGRESS_CIRCUMFERENCE = 2 * Math.PI * 44;
     const BREAK_SOUND_PATH = "./sound.mp3";
-    const LEARNING_COLORS = [
-      "#ff1744", "#ff6d00", "#ffd600", "#76ff03", "#00e676",
-      "#1de9b6", "#00e5ff", "#2979ff", "#3d5afe", "#651fff",
-      "#d500f9", "#f50057", "#ff4081", "#00b0ff", "#c6ff00"
+    const LEARNING_HUES = [
+      0, 25, 45, 80, 120, 155, 180, 210, 230, 260, 290, 330, 345, 195, 70
     ];
     const playedBreakAlerts = new Set();
     let learningAnimationFrame = 0;
@@ -506,8 +501,8 @@
       }
 
       if (bounced) {
-        learningColorIndex = (learningColorIndex + 1) % LEARNING_COLORS.length;
-        logo.style.color = LEARNING_COLORS[learningColorIndex];
+        learningColorIndex = (learningColorIndex + 1) % LEARNING_HUES.length;
+        logo.style.filter = `hue-rotate(${LEARNING_HUES[learningColorIndex]}deg)`;
       }
 
       logo.style.transform = `translate3d(${learningX}px, ${learningY}px, 0)`;
