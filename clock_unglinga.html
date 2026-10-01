@@ -371,6 +371,7 @@
     const BREAK_COMPLETE_DURATION_MS = 10 * 60 * 1000;
     const BREAK_PROGRESS_CIRCUMFERENCE = 2 * Math.PI * 44;
     const SCHOOL_BELL_PATH = "./data/skolabjalla.mp3";
+    const SCHOOL_BELL_TEST_INTERVAL_MS = 20 * 1000;
     const LEARNING_HUES = [
       0, 25, 45, 80, 120, 155, 180, 210, 230, 260, 290, 330, 345, 195, 70
     ];
@@ -648,6 +649,8 @@
 
     buildClock();
     updateClock();
+    playSchoolBell();
+    window.setInterval(playSchoolBell, SCHOOL_BELL_TEST_INTERVAL_MS);
     setInterval(updateClock, 1000);
   </script>
 </body>
