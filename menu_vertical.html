@@ -159,8 +159,10 @@ function currentMenu() {
 
     const d = effectiveDate();
 
-    if (d.getDay() === 6 || d.getDay() === 0) {
-        return menus[2]; // næsta vika í JSON
+    if (d.getDay() === 6) {
+        d.setDate(d.getDate() + 2);
+    } else if (d.getDay() === 0) {
+        d.setDate(d.getDate() + 1);
     }
 
     const today =
