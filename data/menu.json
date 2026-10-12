@@ -119,16 +119,16 @@
     "end": "2026-10-16",
     "label": "12. - 16. október",
     "meals": [
-      "Lax, kryddkartöflur og köld sósa",
-      "Lambasnitsel, kartöflumús, brún sósa og sulta",
       "Soðin ýsa, kartöflur, rúgbrauð og laukfeiti",
+      "Lambasnitsel, kartöflumús, brún sósa og sulta",
+      "Lax, kryddkartöflur og köld sósa",
       "Sveppasúpa og brauðbollur",
       "Kjúklingabollur, hrísgrjón og sósa"
     ],
     "images": [
-      "lax.png",
-      "lambasnitsel.png",
       "sodin_ysa.png",
+      "lambasnitsel.png",
+      "lax.png",
       "sveppasupa.png",
       "kjuklingabollur.png"
     ]
