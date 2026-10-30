@@ -170,5 +170,81 @@
       "kjuklingasupa_mexikosk.png",
       "kjuklingur_bbq.png"
     ]
+  },
+  {
+    "start": "2026-11-02",
+    "end": "2026-11-06",
+    "label": "2. - 6. nóvember",
+    "meals": [
+      "Fiskibollur, kartöflur og brún sósa",
+      "Svikinn héri, kartöflumús og brún sósa",
+      "Nætursöltuð ýsa, kartöflur, rúgbrauð og laukfeiti",
+      "Grjónagrautur, rúsínur og slátur",
+      "Tikka masala kjúklingalæri, hrísgrjón og köld sósa"
+    ],
+    "images": [
+      "fiskibollur.png",
+      "svikinnheri.png",
+      "naetursoltud_ysa.png",
+      "grjonagrautur.png",
+      "tikkamasala.png"
+    ]
+  },
+  {
+    "start": "2026-11-09",
+    "end": "2026-11-13",
+    "label": "9. - 13. nóvember",
+    "meals": [
+      "Fiskur í orlý, kryddkartöflur og köld sósa",
+      "Kjötbollur, kartöflur og brún sósa",
+      "Soðin ýsa, kartöflur, rúgbrauð og laukfeiti",
+      "Jarðaberjaskyr og smurt brauð",
+      "Grænmetisbuff, hrísgrjón og sósa"
+    ],
+    "images": [
+      "placeholder.png",
+      "placeholder.png",
+      "sodin_ysa.png",
+      "placeholder.png",
+      "graenmetisbuff.png"
+    ]
+  },
+  {
+    "start": "2026-11-16",
+    "end": "2026-11-20",
+    "label": "16. - 20. nóvember",
+    "meals": [
+      "Plokkfiskur",
+      "SKIPULAGSDAGUR - FRÍ",
+      "Steiktur fiskur, kartöflur og köld sósa",
+      "Kjúklingasúpa, nachos og rifinn ostur",
+      "Brekkópizza"
+    ],
+    "images": [
+      "plokkfiskur.png",
+      "placeholder.png",
+      "steiktur_fiskur.png",
+      "placeholder.png",
+      "placeholder.png"
+    ]
+  },
+  {
+    "start": "2026-11-23",
+    "end": "2026-11-27",
+    "label": "23. - 27. nóvember",
+    "meals": [
+      "Mexíkófiskur",
+      "Nautagúllas, kartöflumús, brún sósa og sulta",
+      "Soðin ýsa, kartöflur, rúgbrauð og laukfeiti",
+      "Kjötsúpa",
+      "Pastaréttur"
+    ],
+    "images": [
+      "mexikofiskur.png",
+      "nautagullas.png",
+      "sodin_ysa.png",
+      "kjotsupa.png",
+      "placeholder.png"
+    ]
   }
 ]
