@@ -179,15 +179,16 @@
       "Fiskibollur, kartöflur og brún sósa",
       "Svikinn héri, kartöflumús og brún sósa",
       "Nætursöltuð ýsa, kartöflur, rúgbrauð og laukfeiti",
-      "Grjónagrautur, rúsínur og slátur",
-      "Tikka masala kjúklingalæri, hrísgrjón og köld sósa"
+      "Tikka masala kjúklingalæri, hrísgrjón og köld sósa",
+      "Grjónagrautur, rúsínur og slátur"
     ],
     "images": [
       "fiskibollur.png",
       "svikinnheri.png",
       "naetursoltud_ysa.png",
-      "grjonagrautur.png",
-      "tikkamasala.png"
+      "tikkamasala.png",
+      "grjonagrautur.png"
+      
     ]
   },
   {
